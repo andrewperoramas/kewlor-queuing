@@ -9,4 +9,9 @@ class UserQueue extends Model
 {
     /** @use HasFactory<\Database\Factories\UserQueueFactory> */
     use HasFactory;
+
+    public function scopeActive($query)
+    {
+        $query->where('queue_number', '>=', 1);
+    }
 }

@@ -3,9 +3,11 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
 import AppLogo from './app-logo';
+import toast from 'react-hot-toast';
+import { useEffect } from 'react';
 
 const mainNavItems: NavItem[] = [
     {
@@ -13,24 +15,46 @@ const mainNavItems: NavItem[] = [
         url: '/dashboard',
         icon: LayoutGrid,
     },
+    {
+        title: 'Queues',
+        url: '/admin/queues',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [
     {
-        title: 'Repository',
+        title: 'Kewlor',
         url: 'https://github.com/laravel/react-starter-kit',
         icon: Folder,
     },
-    {
-        title: 'Documentation',
-        url: 'https://laravel.com/docs/starter-kits',
-        icon: BookOpen,
-    },
+
 ];
 
 export function AppSidebar() {
+
+    const { flash }: any = usePage().props;
+
+    useEffect(() => {
+        if (flash?.message?.success) {
+
+            toast.success(flash.message.success,
+                {
+                    duration: 2000
+                });
+        }
+    }, [flash]);
+
+    useEffect(() => {
+        if (flash?.message?.error) {
+            toast.error(flash.message.error, {
+                duration: 2000
+            });
+        }
+    }, [flash]);
+
     return (
-        <Sidebar collapsible="icon" variant="inset">
+        <Sidebar collapsible="offcanvas" variant="floating">
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
