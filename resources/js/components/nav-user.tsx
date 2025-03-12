@@ -1,9 +1,8 @@
 import { DropdownMenu, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { SidebarMenu, SidebarMenuButton, SidebarMenuItem  } from '@/components/ui/sidebar';
+import { SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { ChevronsUpDown } from 'lucide-react';
 
 export function NavUser() {
-
     return (
         <SidebarMenu>
             <SidebarMenuItem>
@@ -13,7 +12,6 @@ export function NavUser() {
                             <ChevronsUpDown className="ml-auto size-4" />
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
-
                 </DropdownMenu>
             </SidebarMenuItem>
         </SidebarMenu>

@@ -4,10 +4,10 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import {  Folder, LayoutGrid } from 'lucide-react';
-import AppLogo from './app-logo';
-import toast from 'react-hot-toast';
+import { Folder, LayoutGrid } from 'lucide-react';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
+import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
     {
@@ -28,27 +28,23 @@ const footerNavItems: NavItem[] = [
         url: 'https://github.com/laravel/react-starter-kit',
         icon: Folder,
     },
-
 ];
 
 export function AppSidebar() {
-
     const { flash }: any = usePage().props;
 
     useEffect(() => {
         if (flash?.message?.success) {
-
-            toast.success(flash.message.success,
-                {
-                    duration: 2000
-                });
+            toast.success(flash.message.success, {
+                duration: 2000,
+            });
         }
     }, [flash]);
 
     useEffect(() => {
         if (flash?.message?.error) {
             toast.error(flash.message.error, {
-                duration: 2000
+                duration: 2000,
             });
         }
     }, [flash]);

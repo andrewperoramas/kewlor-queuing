@@ -6,7 +6,7 @@ declare global {
 
 type PaginatedCollection<T extends object> = {
     data: Array<T>;
-    links: any,
+    links: any;
     current_page: number;
     first_page_url: string | null;
     from: number;
@@ -19,5 +19,3 @@ type PaginatedCollection<T extends object> = {
     to: number;
     total: number;
 };
-
-

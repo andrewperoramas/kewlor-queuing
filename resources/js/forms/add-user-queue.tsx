@@ -1,12 +1,11 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler } from 'react';
 import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import useUserStore from '@/stores/useUserQueueStore';
+import { useForm } from '@inertiajs/react';
+import { LoaderCircle } from 'lucide-react';
+import { FormEventHandler } from 'react';
 
 type UserForm = {
     name: string;
@@ -30,7 +29,7 @@ const AddUserQueue = () => {
     }
 
     return (
-        <form className="flex flex-col gap-6 w-1/4" onSubmit={submit}>
+        <form className="flex w-1/4 flex-col gap-6" onSubmit={submit}>
             <div className="grid gap-6">
                 <div className="grid gap-2">
                     <div className="flex items-center">
