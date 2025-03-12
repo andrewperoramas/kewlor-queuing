@@ -11,6 +11,7 @@ class UserQueueData extends Data
     public function __construct(
         public string $name,
         public int $queue_number,
+        public string $message,
         public string $email,
     ) {}
 }

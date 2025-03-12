@@ -6,7 +6,7 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class AdminQueueData extends Data
+class UserQueueData extends Data
 {
     public function __construct(
         public string $name,

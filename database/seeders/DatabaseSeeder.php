@@ -23,7 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $addUserQueue = app()->make(AddUserQueue::class);
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 40; $i++) {
 
             $addUserQueue->handle([
                 'name' => fake()->userName(),

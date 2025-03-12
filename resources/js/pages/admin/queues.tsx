@@ -4,10 +4,10 @@ import AppLayout from '@/layouts/app-layout';
 import { PaginatedCollection } from '@/types/global';
 import { Link, usePoll } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
+import Pagination from '@/components/pagination';
 
-const Queues = ({ userQueues }: { userQueues: PaginatedCollection<App.Data.AdminQueueData> }) => {
-    const firstInQueue = userQueues.data.length > 0 ? userQueues.data[0] : null;
-    const remainingQueues = userQueues.data.length > 1 ? userQueues.data.slice(1) : [];
+const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<App.Data.UserQueueData>, firstInQueue: App.Data.UserQueueData }) => {
+
     const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
     usePoll(2000, {
@@ -57,7 +57,7 @@ const Queues = ({ userQueues }: { userQueues: PaginatedCollection<App.Data.Admin
                     </div>
                 )}
 
-                {remainingQueues.length > 0 ? (
+                {userQueues.data.length > 0 ? (
                     <div className="overflow-hidden rounded-lg dark:bg-neutral-900/20 shadow-md">
                         <h2 className="p-6 text-xl font-bold">Remaining Queue</h2>
                         <table className="min-w-full">
@@ -69,7 +69,7 @@ const Queues = ({ userQueues }: { userQueues: PaginatedCollection<App.Data.Admin
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {remainingQueues.map((userQueue: App.Data.AdminQueueData) => (
+                                {userQueues.data.map((userQueue: App.Data.UserQueueData) => (
                                     <tr key={userQueue.queue_number}>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.message}</td>
@@ -78,6 +78,11 @@ const Queues = ({ userQueues }: { userQueues: PaginatedCollection<App.Data.Admin
                                 ))}
                             </tbody>
                         </table>
+
+                        <hr/>
+                        <div className="flex justify-end mr-10 mt-4 mb-2">
+                            <Pagination links={userQueues.links} />
+                        </div>
                     </div>
                 ) : (
                     <p className="text-gray-500">No remaining data in the queue.</p>

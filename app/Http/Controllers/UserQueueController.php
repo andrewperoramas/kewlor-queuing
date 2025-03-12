@@ -20,7 +20,7 @@ class UserQueueController extends Controller
         $queue_number = UserQueue::query()->active()->where('email', @$data['email'])->first()?->queue_number ?? 0;
 
         return inertia()->render('home', [
-            'userQueues' => Inertia::defer(fn () => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('created_at')->get())),
+            'userQueues' => Inertia::defer(fn () => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('created_at')->paginate(10))),
             'currentUserQueueNumber' => $queue_number,
 
         ]);

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\RemoveUserQueue;
-use App\Data\AdminQueueData;
+use App\Data\UserQueueData;
 use App\Models\UserQueue;
 
 class AdminQueueController extends Controller
@@ -11,7 +11,8 @@ class AdminQueueController extends Controller
     public function index()
     {
         return inertia()->render('admin/queues', [
-            'userQueues' => AdminQueueData::collect(UserQueue::active()->limit(10)->orderBy('queue_number')->paginate(10)),
+            'userQueues' => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('queue_number')->paginate(10)),
+            'firstInQueue' => UserQueueData::optional(UserQueue::active()->orderBy('queue_number')->first())
         ]);
     }
 

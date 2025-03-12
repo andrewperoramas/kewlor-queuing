@@ -5,12 +5,14 @@ import AddRequestQueue from '@/forms/add-request-queue';
 import AddUserQueue from '@/forms/add-user-queue';
 import useUserStore from '@/stores/useUserQueueStore';
 import toast from 'react-hot-toast';
+import Pagination from '@/components/pagination';
+import { PaginatedCollection } from '@/types/global';
 
 export default function Home({
-    userQueues = [],
+    userQueues ,
     currentUserQueueNumber = 0,
 }: {
-    userQueues: App.Data.UserQueueData[];
+    userQueues: PaginatedCollection<App.Data.UserQueueData>;
     currentUserQueueNumber: number;
 }) {
     const { user } = useUserStore();
@@ -59,9 +61,10 @@ export default function Home({
                         <AddRequestQueue />
 
                         <Deferred data="userQueues" fallback={<div>Loading...</div>}>
-                            <ul className="mt-4 grid w-1/2 gap-2">
-                                {userQueues?.length > 0 &&
-                                    userQueues?.map((userQueue, index) => (
+                                <>
+                            <ul className="my-4 grid w-1/2 gap-2">
+                                {userQueues?.data?.length > 0 &&
+                                    userQueues?.data.map((userQueue, index) => (
                                         <li
                                             key={index}
                                             className="flex flex-col justify-between rounded-b border-gray-400 bg-white p-4 leading-normal shadow-lg lg:rounded-r lg:rounded-b-none lg:border-gray-400"
@@ -70,6 +73,10 @@ export default function Home({
                                         </li>
                                     ))}
                             </ul>
+
+
+                          <Pagination links={userQueues?.links} />
+                        </>
                         </Deferred>
                     </>
                 )}
