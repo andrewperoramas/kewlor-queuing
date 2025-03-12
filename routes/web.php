@@ -19,5 +19,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
+Route::get('debug', function () {
+    dd('debug');
+});
+
+
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

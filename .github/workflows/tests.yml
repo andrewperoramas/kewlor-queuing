@@ -27,6 +27,10 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Set up environment
+        run: |
+          echo "API_KEY=${{ secrets.CLOUDWAYS_API_KEY }}" >> $GITHUB_ENV
+
       - name: Install Node Dependencies
         run: npm ci
 
@@ -44,3 +48,8 @@ jobs:
 
       - name: Tests
         run: ./vendor/bin/pest
+
+      - name: Run deployment to cloudways
+        run: |
+          chmod +x deploy.sh
+          ./deploy.sh
