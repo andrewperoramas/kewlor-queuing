@@ -1,7 +1,7 @@
 import { Deferred, Head, usePage, usePoll } from '@inertiajs/react';
 import { useEffect } from 'react';
 
-import AddRequestQueue from '@/forms/add-request-queue';
+import AddRequestQueue from '@/dialogs/add-request-queue';
 import AddUserQueue from '@/forms/add-user-queue';
 import useUserStore from '@/stores/useUserQueueStore';
 import toast from 'react-hot-toast';
@@ -60,7 +60,7 @@ export default function Home({
 
                         <AddRequestQueue />
 
-                        <Deferred data="userQueues" fallback={<div>Loading...</div>}>
+                        <Deferred data="userQueues" fallback={<div className="h-[800px] w-full block"></div>}>
                                 <>
                             <ul className="my-4 grid w-1/2 gap-2">
                                 {userQueues?.data?.length > 0 &&
