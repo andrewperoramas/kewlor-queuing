@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\UserQueueController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -11,6 +12,7 @@ Route::get('/queue', function () {
     return Inertia::render('queue');
 })->name('queue');
 
+Route::post('queue', [UserQueueController::class, 'store'])->name('queue.store');
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
