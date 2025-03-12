@@ -3,6 +3,7 @@
 namespace App\Actions;
 
 use App\Models\UserQueue;
+use App\UserQueueStatus;
 use Illuminate\Support\Facades\DB;
 
 class AddUserQueue
@@ -16,6 +17,7 @@ class AddUserQueue
             $newQueueNumber = $lastQueueNumber + 1;
 
             $data['queue_number'] = $newQueueNumber;
+            $data['status'] = UserQueueStatus::QUEUED;
             $userQueue = UserQueue::create($data);
         });
 

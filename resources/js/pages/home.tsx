@@ -7,6 +7,10 @@ import useUserStore from '@/stores/useUserQueueStore';
 import toast from 'react-hot-toast';
 import Pagination from '@/components/pagination';
 import { PaginatedCollection } from '@/types/global';
+import { Card } from '@/components/ui/card';
+import { Collapsible } from '@/components/ui/collapsible';
+import { Badge } from '@/components/ui/badge';
+import HeadingSmall from '@/components/heading-small';
 
 export default function Home({
     userQueues ,
@@ -62,15 +66,34 @@ export default function Home({
 
                         <Deferred data="userQueues" fallback={<div className="h-[800px] w-full block"></div>}>
                                 <>
-                            <ul className="my-4 grid w-1/2 gap-2">
+                            <ul className="my-4 grid w-1/3 gap-4">
                                 {userQueues?.data?.length > 0 &&
                                     userQueues?.data.map((userQueue, index) => (
-                                        <li
-                                            key={index}
-                                            className="flex flex-col justify-between rounded-b border-gray-400 bg-white p-4 leading-normal shadow-lg lg:rounded-r lg:rounded-b-none lg:border-gray-400"
-                                        >
-                                            #{userQueue.queue_number} {userQueue.name}
-                                        </li>
+                                        <Card key={index}>
+                                                    <div className="pl-4">
+                                                       <Badge> #{userQueue.queue_number} </Badge> {userQueue.name}
+                                                    </div>
+
+                                                    <hr/>
+
+                                                    {
+                                                        userQueue.admin_notes &&
+                                                        <div className="pl-4">
+                                                            <HeadingSmall title="Notes" description={userQueue.admin_notes} />
+                                                        </div>
+
+                                                    }
+
+                                                    {
+                                                        userQueue.message &&
+                                                        <div className="pl-4">
+                                                            <HeadingSmall title="Message:" description={userQueue.message} />
+                                                        </div>
+
+                                                    }
+
+
+                                        </Card>
                                     ))}
                             </ul>
 

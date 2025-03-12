@@ -1,26 +1,23 @@
 import { useState, useEffect } from 'react';
-import HeadingSmall from '@/components/heading-small';
 import AppLayout from '@/layouts/app-layout';
 import { PaginatedCollection } from '@/types/global';
-import { Link, router, usePoll } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
+import {  router, usePoll } from '@inertiajs/react';
 import Pagination from '@/components/pagination';
 import ManageSingleQueue from '@/dialogs/manage-single-queue';
 
-const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<App.Data.UserQueueData>, firstInQueue: App.Data.UserQueueData }) => {
+const QueuesCompleted = ({completedQueues}: { completedQueues: PaginatedCollection<App.Data.UserQueueData>  }) => {
 
-    const [isButtonDisabled, setIsButtonDisabled] = useState(false);
     const [isUpdated, setIsUpdated] = useState(false);
 
     usePoll(2000, {
-        only: ['userQueues'],
+        only: ['completedQueues'],
     });
 
     useEffect(() => {
 
         setTimeout(() => {
             router.reload({
-                only: ['userQueue']
+                only: ['completedQueues']
             })
         }, 5000)
 
@@ -28,52 +25,13 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
         setIsUpdated(false);
     }, [isUpdated])
 
-    const handleDoneClick = () => {
-        setIsButtonDisabled(true);
-        setTimeout(() => {
-            setIsButtonDisabled(false);
-        }, 3000);
-    };
-
     return (
         <AppLayout>
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-                {firstInQueue && (
-                    <div className="mb-8 rounded-lg dark:bg-neutral-900/20 p-6 shadow-md">
-                        <h2 className="mb-4 text-xl font-bold">First in Queue</h2>
-                        <div className="flex items-end justify-between">
-                            <div className="space-y-2">
-                                <HeadingSmall title="Name" description={firstInQueue.name} />
-                                <p>
-                                    <strong>Request:</strong> {firstInQueue.message}
-                                </p>
-                                <p>
-                                    <strong>Queue Number:</strong> {firstInQueue.queue_number}
-                                </p>
-                            </div>
 
-                            <Link
-                                method="delete"
-                                className={`w-20 rounded-md py-2 text-center text-white ${
-                                    isButtonDisabled ? 'bg-red-300' : 'bg-red-500'
-                                }`}
-                                href={route('admin.queue.destroy', firstInQueue.queue_number)}
-                                onClick={handleDoneClick}
-                                disabled={isButtonDisabled}
-                            >
-
-                                <span className="flex items-center justify-center px-2">
-                                {isButtonDisabled && <LoaderCircle className="h-4 mx-2 w-4 animate-spin" />}
-                                Done
-                                </span>
-                            </Link>
-                        </div>
-                    </div>
-                )}
-
-                {userQueues.data.length > 0 ? (
+                {completedQueues.data.length > 0 ? (
                     <div className="overflow-hidden rounded-lg dark:bg-neutral-900/20 shadow-md">
-                        <h2 className="p-6 text-xl font-bold">Remaining Queue</h2>
+                        <h2 className="p-6 text-xl font-bold">Completed Queue</h2>
                         <table className="min-w-full">
                             <thead className="dark:bg-neutral-900/20">
                                 <tr>
@@ -84,7 +42,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
-                                {userQueues.data.map((userQueue: App.Data.UserQueueData) => (
+                                {completedQueues.data.map((userQueue: App.Data.UserQueueData) => (
                                     <tr key={userQueue.queue_number}>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.message}</td>
@@ -97,7 +55,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
 
                         <hr/>
                         <div className="flex justify-end mr-10 mt-4 mb-2">
-                            <Pagination links={userQueues.links} />
+                            <Pagination links={completedQueues.links} />
                         </div>
                     </div>
                 ) : (
@@ -108,4 +66,4 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
     );
 };
 
-export default Queues;
+export default QueuesCompleted;

@@ -20,6 +20,11 @@ const mainNavItems: NavItem[] = [
         url: '/admin/queues',
         icon: LayoutGrid,
     },
+    {
+        title: 'Completed Queues',
+        url: '/admin/queues/completed',
+        icon: LayoutGrid,
+    },
 ];
 
 const footerNavItems: NavItem[] = [

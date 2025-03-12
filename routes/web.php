@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminFinishedQueueController;
 use App\Http\Controllers\AdminQueueController;
 use App\Http\Controllers\UserQueueController;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/admin/queues', [AdminQueueController::class, 'index']);
+    Route::post('/admin/queues', [AdminQueueController::class, 'update'])->name('admin.queue.update');
     Route::delete('/admin/queues/{queueNumber}', [AdminQueueController::class, 'destroy'])->name('admin.queue.destroy');
+
+
+    Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
 
 });
 

@@ -8,14 +8,12 @@ use App\Data\UserQueueData;
 use App\Http\Requests\UserUpdateQueueRequest;
 use App\Models\UserQueue;
 
-class AdminQueueController extends Controller
+class AdminFinishedQueueController extends Controller
 {
     public function index()
     {
-        return inertia()->render('admin/queues', [
-            'userQueues' => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('queue_number')->paginate(10)),
+        return inertia()->render('admin/queues-completed', [
             'completedQueues' => UserQueueData::collect(UserQueue::completed()->limit(10)->orderBy('queue_number')->paginate(10)),
-            'firstInQueue' => UserQueueData::optional(UserQueue::active()->orderBy('queue_number')->first())
         ]);
     }
 

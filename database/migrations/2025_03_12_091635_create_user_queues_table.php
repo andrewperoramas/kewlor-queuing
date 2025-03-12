@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('email');
             $table->unsignedInteger('queue_number')->default(1);
             $table->index('queue_number');
-            $table->string('message');
+            $table->text('message');
+            $table->text('admin_notes')->nullable();
+            $table->string('status');
             $table->timestamps();
         });
     }
