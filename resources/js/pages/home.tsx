@@ -67,7 +67,11 @@ export default function Home({
                     <>
                         <h1>Hi {user.name}</h1>
 
-                        <>queue number: {currentUserQueueNumber}</>
+                        {
+                            currentUserQueueNumber > 0 &&
+                            <>queue number: {currentUserQueueNumber}</>
+                        }
+
                         <AddRequestQueue />
 
                         <Deferred data="userQueues" fallback={<div>Loading...</div>}>
