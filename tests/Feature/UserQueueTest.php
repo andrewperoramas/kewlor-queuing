@@ -1,6 +1,6 @@
 <?php
 
-it('returns a successful response', function () {
+it('user can add itself to queue', function () {
     $response = $this->get('/');
 
     $response->assertStatus(200);
