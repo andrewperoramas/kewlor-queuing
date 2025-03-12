@@ -70,8 +70,12 @@ export default function Home({
                                 {userQueues?.data?.length > 0 &&
                                     userQueues?.data.map((userQueue, index) => (
                                         <Card key={index}>
-                                                    <div className="pl-4">
-                                                       <Badge> #{userQueue.queue_number} </Badge> {userQueue.name}
+                                                    <div className="pl-4 flex">
+                                                        { userQueue.queue_number !== 0 ?
+<Badge className="mr-2"> #{userQueue.queue_number} </Badge> : <Badge className="mr-2" variant="destructive"> completed </Badge>
+                                                        }
+
+                                                        {userQueue.name}
                                                     </div>
 
                                                     <hr/>
