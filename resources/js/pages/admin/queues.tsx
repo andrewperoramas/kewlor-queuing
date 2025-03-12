@@ -1,4 +1,3 @@
-import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import { PaginatedCollection } from '@/types/global';
 import { Link, usePoll } from '@inertiajs/react';

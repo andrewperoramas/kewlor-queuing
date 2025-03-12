@@ -1,6 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { type SharedData } from '@/types';
-import { Head, Link, usePage } from '@inertiajs/react';
+import { Head  } from '@inertiajs/react';
 
 export default function Queue() {
 

@@ -1,10 +1,9 @@
 import React, { FormEventHandler } from 'react'
 
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog,  DialogContent,   DialogTitle  } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@headlessui/react';
 import InputError from '@/components/input-error';
 import { LoaderCircle } from 'lucide-react';
 import useUserStore from '@/stores/useUserQueueStore';
@@ -30,15 +29,15 @@ const AddRequestQueue = () => {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('queue.store'), {
-            onSuccess: (message) => {
+            onSuccess: () => {
                 setOpen(false);
             },
             preserveScroll: true,
         },
         );
 
-        // reset();
-        // clearErrors();
+        reset();
+        clearErrors();
     };
 
   return (

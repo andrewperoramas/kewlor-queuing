@@ -15,7 +15,7 @@ type UserForm = {
 
 const AddUserQueue = () => {
     const { user, setUser } = useUserStore();
-    const { data, setData, post, processing, errors, reset } = useForm<Required<UserForm>>({
+    const { data, setData, processing, errors } = useForm<Required<UserForm>>({
         name: '',
         email: '',
     });

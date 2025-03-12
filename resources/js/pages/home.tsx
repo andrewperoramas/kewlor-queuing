@@ -1,18 +1,10 @@
-import { Button } from '@/components/ui/button';
-import { type SharedData } from '@/types';
-import { Deferred, Head, Link, router, useForm, usePage, usePoll, WhenVisible } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useEffect } from 'react';
-import InputError from '@/components/input-error';
-import TextLink from '@/components/text-link';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Deferred, Head, usePage, usePoll } from '@inertiajs/react';
+import { useEffect } from 'react';
+
 import AddUserQueue from '@/forms/add-user-queue';
 import useUserStore from '@/stores/useUserQueueStore';
 import toast from 'react-hot-toast';
 import AddRequestQueue from '@/forms/add-request-queue';
-import AppLayout from '@/layouts/app-layout';
 
 export default function Home({
     userQueues = [],
