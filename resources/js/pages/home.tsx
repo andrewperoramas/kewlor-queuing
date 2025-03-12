@@ -38,7 +38,7 @@ export default function Home() {
 
 
             <div className="flex min-h-screen flex-col gap-2 items-center justify-center  bg-[#FDFDFC] p-6 text-[#1b1b18]  lg:p-8 ">
-                <h1>Join Us</h1>
+                <h1>Join Us Berting</h1>
 
             <form className="flex flex-col gap-6 w-1/4" onSubmit={submit}>
                 <div className="grid gap-6">
