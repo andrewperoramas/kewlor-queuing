@@ -52,14 +52,12 @@ export default function Home({
         }
     }, [flash]);
 
-
     return (
         <>
             <Head title="Home">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
-
 
             <div className="flex min-h-screen flex-col gap-2 items-center justify-center  bg-[#FDFDFC] p-6 text-[#1b1b18]  lg:p-8 ">
                 {!user?.name ?
@@ -76,7 +74,7 @@ export default function Home({
 
                         <Deferred data="userQueues" fallback={<div>Loading...</div>}>
 
-                <ul className="w-full gap-2 grid">
+                <ul className="w-1/2 mt-4 gap-2 grid">
                 {
 
                             userQueues?.length > 0 &&
@@ -86,9 +84,6 @@ export default function Home({
                         }
                 </ul>
                       </Deferred>
-
-
-
 
                     </>
                 }
