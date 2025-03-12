@@ -21,6 +21,8 @@ class RemoveUserQueue
                     ->where('queue_number', '>=', $queueNumber)
                     ->decrement('queue_number');
 
+                inertia()->clearHistory();
+
                 // Delete the record with the specified queue_number
                 /* DB::table('user_queues') */
                 /*     ->where('queue_number', $queueNumber) */

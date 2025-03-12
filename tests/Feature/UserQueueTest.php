@@ -2,9 +2,9 @@
 
 use App\Actions\AddUserQueue;
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
-use Inertia\Testing\AssertableInertia as Assert;
 use function Pest\Laravel\delete;
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -26,14 +26,13 @@ it('user can add itself to queue', function () {
 it('user can add itself to queue via request', function () {
 
     $post = post('queue', [
-        'name' =>  'Adichan',
+        'name' => 'Adichan',
         'email' => 'burig@yahoo.com',
         'message' => 'hi there',
     ]);
 
     $post->assertSessionHas('message.success');
 });
-
 
 it('user queue form has validation', function () {
 
@@ -51,13 +50,13 @@ it('cannot add duplicated email', function () {
     $post = post('queue', [
         'email' => 'burkasing@kerik.com',
         'name' => 'test',
-        'message' => 'test'
+        'message' => 'test',
     ]);
 
     $post = post('queue', [
         'email' => 'burkasing@kerik.com',
         'name' => 'test',
-        'message' => 'test'
+        'message' => 'test',
     ]);
 
     $post->assertSessionHasErrors([
@@ -67,23 +66,22 @@ it('cannot add duplicated email', function () {
 
 it('queues correctly', function () {
 
-
     $post = post('queue', [
         'email' => 'test1@yahoo.com',
         'name' => 'test',
-        'message' => 'test'
+        'message' => 'test',
     ]);
 
     $post = post('queue', [
         'email' => 'test2@yahoo.com',
         'name' => 'test',
-        'message' => 'test'
+        'message' => 'test',
     ]);
 
     $post = post('queue', [
         'email' => 'test3@yahoo.com',
         'name' => 'test',
-        'message' => 'test'
+        'message' => 'test',
     ]);
 
     $user = User::factory()->create([
@@ -107,5 +105,3 @@ it('queues correctly', function () {
     );
 
 });
-
-

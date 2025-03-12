@@ -2,10 +2,7 @@
 
 namespace App\Data;
 
-use App\PuppyStatus;
-use Illuminate\Support\Collection;
 use Spatie\LaravelData\Data;
-use Spatie\LaravelData\DataCollection;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
@@ -16,8 +13,5 @@ class AdminQueueData extends Data
         public int $queue_number,
         public string $email,
         public string $message,
-    ) {
-
-    }
+    ) {}
 }
-

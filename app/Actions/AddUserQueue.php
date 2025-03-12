@@ -16,7 +16,7 @@ class AddUserQueue
             $newQueueNumber = $lastQueueNumber + 1;
 
             $data['queue_number'] = $newQueueNumber;
-            $userQueue =  UserQueue::create($data);
+            $userQueue = UserQueue::create($data);
         });
 
         return $userQueue;

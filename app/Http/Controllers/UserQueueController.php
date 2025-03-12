@@ -11,19 +11,17 @@ use Inertia\Inertia;
 
 class UserQueueController extends Controller
 {
-
-
     public function index(Request $request)
     {
         $data = $request->validate([
-            'email' => 'email'
+            'email' => 'email',
         ]);
 
         $queue_number = UserQueue::query()->active()->where('email', @$data['email'])->first()?->queue_number ?? 0;
 
         return inertia()->render('home', [
             'userQueues' => Inertia::defer(fn () => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('created_at')->get())),
-            'currentUserQueueNumber' => $queue_number
+            'currentUserQueueNumber' => $queue_number,
 
         ]);
     }

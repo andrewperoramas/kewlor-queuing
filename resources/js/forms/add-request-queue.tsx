@@ -40,8 +40,10 @@ const AddRequestQueue = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <Button onClick={() => setOpen(true)}>Join</Button>
-            <DialogContent>
+            <Button className="bg-black text-white hover:bg-gray"  onClick={() => setOpen(true)}>Join</Button>
+            <DialogContent
+ className="dark:bg-white dark:text-black"
+            >
                 <DialogTitle>Add your name on queue</DialogTitle>
                 <form className="flex flex-col gap-6" onSubmit={submit}>
                     <div className="grid gap-2">
@@ -64,7 +66,7 @@ const AddRequestQueue = () => {
 
                         {errors.name && <InputError message={errors?.name} />}
                     </div>
-                    <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button  type="submit" className=" hover:bg-gray bg-black text-white mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Join
                     </Button>
