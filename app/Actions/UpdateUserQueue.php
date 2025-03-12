@@ -72,7 +72,7 @@ class UpdateUserQueue
             }
 
             // Adjust the positions of other queues
-            if ($newQueueNumber > $currentQueueNumber) {
+            if ($newQueueNumber >= $currentQueueNumber) {
                 // Decrement queue numbers between the old and new positions
                 DB::table('user_queues')
                     ->where('queue_number', '>', $currentQueueNumber)
@@ -103,6 +103,10 @@ class UpdateUserQueue
                     ->where('id', $existingQueue->id)
                     ->update(['queue_number' => $newQueueNumber + 1]);
             }
+
+
+            $this->renumberQueues();
+
         });
     }
 
