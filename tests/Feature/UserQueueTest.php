@@ -10,7 +10,7 @@ use function Pest\Laravel\get;
 use function Pest\Laravel\post;
 use function PHPUnit\Framework\assertNotNull;
 
-it('user can add itself to queue', function () {
+it('user can add itself to queue', function (): void {
 
     $addUserQueue = app(AddUserQueue::class);
 
@@ -23,7 +23,7 @@ it('user can add itself to queue', function () {
     assertNotNull($createdUserQueue);
 });
 
-it('user can add itself to queue via request', function () {
+it('user can add itself to queue via request', function (): void {
 
     $post = post('queue', [
         'name' => 'Adichan',
@@ -34,7 +34,7 @@ it('user can add itself to queue via request', function () {
     $post->assertSessionHas('message.success');
 });
 
-it('user queue form has validation', function () {
+it('user queue form has validation', function (): void {
 
     $post = post('queue', [
     ]);
@@ -45,7 +45,7 @@ it('user queue form has validation', function () {
     ]);
 });
 
-it('cannot add duplicated email', function () {
+it('cannot add duplicated email', function (): void {
 
     $post = post('queue', [
         'email' => 'burkasing@kerik.com',
@@ -64,7 +64,7 @@ it('cannot add duplicated email', function () {
     ]);
 });
 
-it('queues correctly', function () {
+it('queues correctly', function (): void {
 
     $post = post('queue', [
         'email' => 'test1@yahoo.com',
@@ -90,17 +90,17 @@ it('queues correctly', function () {
     actingAs($user);
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page) => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 2)
     );
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page) => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 1)
     );
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page) => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 0)
     );
 

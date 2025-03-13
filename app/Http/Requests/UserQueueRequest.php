@@ -24,9 +24,7 @@ class UserQueueRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => Rule::unique('user_queues')->where(function ($query) {
-                return $query->where('queue_number', '>', 0);
-            }), // Exclude the current record
+            'email' => Rule::unique('user_queues')->where(fn($query) => $query->where('queue_number', '>', 0)), // Exclude the current record
             'message' => 'required',
         ];
     }

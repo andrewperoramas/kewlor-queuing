@@ -9,7 +9,7 @@ class UpdateUserQueue
 {
     public function handle(array $data): void
     {
-        DB::transaction(function () use ($data) {
+        DB::transaction(function () use ($data): void {
             // Extract data
             $queueId = $data['id']; // The ID of the queue to update
             $newStatus = $data['status']; // The new status

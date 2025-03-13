@@ -9,10 +9,8 @@ use Inertia\Inertia;
 Route::get('/', [UserQueueController::class, 'index'])->name('home');
 Route::post('queue', [UserQueueController::class, 'store'])->name('queue.store');
 
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function (): void {
+    Route::get('dashboard', fn() => Inertia::render('dashboard'))->name('dashboard');
 
     Route::get('/admin/queues', [AdminQueueController::class, 'index']);
     Route::post('/admin/queues', [AdminQueueController::class, 'update'])->name('admin.queue.update');
@@ -24,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 
-Route::get('debug', function () {
+Route::get('debug', function (): void {
     dd('debug');
 });
 

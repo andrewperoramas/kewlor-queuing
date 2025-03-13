@@ -62,7 +62,7 @@ const AddUserQueue = () => {
                     />
                     <InputError message={errors.email} />
                 </div>
-                <Button type="submit" variant="default" className="mt-4 w-full" tabIndex={4} disabled={processing}>
+                <Button type="submit" className="mt-4 w-full bg-black text-white hover:bg-gray-700" tabIndex={4} disabled={processing}>
                     {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                     Confirm
                 </Button>

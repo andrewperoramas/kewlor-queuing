@@ -41,7 +41,7 @@ class UserQueueController extends Controller
 
 
     return inertia()->render('home', [
-        'userQueues' => Inertia::defer(fn () => UserQueueData::collect($combinedQueues)),
+        'userQueues' => Inertia::defer(fn (): \Spatie\LaravelData\DataCollection|\Spatie\LaravelData\PaginatedDataCollection|\Spatie\LaravelData\CursorPaginatedDataCollection|\Illuminate\Support\Enumerable|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\Paginator|\Illuminate\Pagination\AbstractCursorPaginator|\Illuminate\Contracts\Pagination\CursorPaginator|array => UserQueueData::collect($combinedQueues)),
         'currentUserQueueNumber' => $queue_number,
     ]);
 }

@@ -8,7 +8,7 @@ class RemoveUserQueue
 {
     public function handle(int $queueNumber): void
     {
-        DB::transaction(function () use ($queueNumber) {
+        DB::transaction(function () use ($queueNumber): void {
             // Check if the queue_number exists
             $exists = DB::table('user_queues')
                 ->where('queue_number', $queueNumber)
