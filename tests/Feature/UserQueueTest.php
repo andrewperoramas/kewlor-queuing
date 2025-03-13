@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Actions\AddUserQueue;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -90,17 +92,17 @@ it('queues correctly', function (): void {
     actingAs($user);
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 2)
     );
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 1)
     );
 
     $delete = delete('/admin/queues/1');
-    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): \Illuminate\Testing\Fluent\AssertableJson => $page
+    $queues = get('/admin/queues')->assertInertia(fn (Assert $page): Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 0)
     );
 

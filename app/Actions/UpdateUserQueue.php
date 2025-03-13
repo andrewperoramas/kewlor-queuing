@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Models\UserQueue;
 use Illuminate\Support\Facades\DB;
+use InvalidArgumentException;
 
-class UpdateUserQueue
+final class UpdateUserQueue
 {
     public function handle(array $data): void
     {
@@ -41,7 +44,7 @@ class UpdateUserQueue
 
             // Validate the new queue number (if not completed)
             if ($newQueueNumber < 0) {
-                throw new \InvalidArgumentException('Queue number must be at least 0.');
+                throw new InvalidArgumentException('Queue number must be at least 0.');
             }
 
             // If the status is 'completed', adjust other queues to fill the gap
@@ -53,6 +56,7 @@ class UpdateUserQueue
 
                 // Renumber all non-completed queues to ensure they are sequential
                 $this->renumberQueues();
+
                 return; // Exit after handling completed status
             }
 
@@ -104,7 +108,6 @@ class UpdateUserQueue
                     ->update(['queue_number' => $newQueueNumber + 1]);
             }
 
-
             $this->renumberQueues();
 
         });
@@ -113,7 +116,7 @@ class UpdateUserQueue
     /**
      * Renumber all non-completed queues to ensure they are sequential.
      */
-    protected function renumberQueues(): void
+    private function renumberQueues(): void
     {
         // Fetch all non-completed queues, ordered by current queue_number
         $queues = DB::table('user_queues')

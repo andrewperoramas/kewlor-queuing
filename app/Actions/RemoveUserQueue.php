@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use Illuminate\Support\Facades\DB;
 
-class RemoveUserQueue
+final class RemoveUserQueue
 {
     public function handle(int $queueNumber): void
     {

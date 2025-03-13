@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Models\UserQueue;
 use App\UserQueueStatus;
 use Illuminate\Support\Facades\DB;
 
-class AddUserQueue
+final class AddUserQueue
 {
     public function handle($data): ?UserQueue
     {

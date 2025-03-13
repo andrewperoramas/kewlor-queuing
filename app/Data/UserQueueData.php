@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Data;
 
 use App\UserQueueStatus;
@@ -7,7 +9,7 @@ use Spatie\LaravelData\Data;
 use Spatie\TypeScriptTransformer\Attributes\TypeScript;
 
 #[TypeScript]
-class UserQueueData extends Data
+final class UserQueueData extends Data
 {
     public function __construct(
         public int $id,

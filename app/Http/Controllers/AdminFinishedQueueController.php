@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
 use App\Actions\RemoveUserQueue;
@@ -8,7 +10,7 @@ use App\Data\UserQueueData;
 use App\Http\Requests\UserUpdateQueueRequest;
 use App\Models\UserQueue;
 
-class AdminFinishedQueueController extends Controller
+final class AdminFinishedQueueController extends Controller
 {
     public function index()
     {
@@ -30,6 +32,7 @@ class AdminFinishedQueueController extends Controller
         $updateUserQueue->handle($userUpdateQueueRequest->validated());
         session()->flash('message.success', 'Queue has been updated!');
         inertia()->clearHistory();
+
         return redirect()->back();
     }
 }

@@ -1,11 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class UserQueueRequest extends FormRequest
+final class UserQueueRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +26,7 @@ class UserQueueRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'email' => Rule::unique('user_queues')->where(fn($query) => $query->where('queue_number', '>', 0)), // Exclude the current record
+            'email' => Rule::unique('user_queues')->where(fn ($query) => $query->where('queue_number', '>', 0)), // Exclude the current record
             'message' => 'required',
         ];
     }
