@@ -8,43 +8,43 @@ use App\Actions\AddUserQueue;
 use App\Data\UserQueueData;
 use App\Http\Requests\UserQueueRequest;
 use App\Models\UserQueue;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 final class UserQueueController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): \Inertia\Response
     {
+        /** @var array<string, string> $data */
         $data = $request->validate([
-            'email' => 'email',
+            'email' => ['required', 'email'],
         ]);
 
-        $queue_number = UserQueue::query()->active()->where('email', @$data['email'])->first()?->queue_number ?? 0;
-        $perPage = 10; // Set items per page
+        $email = $data['email'] ?? null;
+        $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0;
+        $perPage = 10;
 
-        // Fetch active and inactive queues separately
         $activeQueues = UserQueue::active()->orderBy('created_at');
         $inactiveQueues = UserQueue::completed()->orderBy('created_at');
 
-        // Combine the queries using union
         $combinedQueues = $activeQueues->union($inactiveQueues);
 
-        // Add a custom order to ensure active queues come first
         $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
             ->mergeBindings($combinedQueues->getQuery())
-            ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END') // Move queue_number = 0 to the end
-            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END") // Move completed status to the end
+            ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END')
+            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END")
             ->orderBy('queue_number')
             ->paginate($perPage);
 
-        return inertia()->render('home', [
-            'userQueues' => Inertia::defer(fn (): \Spatie\LaravelData\DataCollection|\Spatie\LaravelData\PaginatedDataCollection|\Spatie\LaravelData\CursorPaginatedDataCollection|\Illuminate\Support\Enumerable|\Illuminate\Pagination\AbstractPaginator|\Illuminate\Contracts\Pagination\Paginator|\Illuminate\Pagination\AbstractCursorPaginator|\Illuminate\Contracts\Pagination\CursorPaginator|array => UserQueueData::collect($combinedQueues)),
+        return Inertia::render('home', [
+            'userQueues' => Inertia::defer(fn (): array => UserQueueData::collect($combinedQueues)->toArray()),
             'currentUserQueueNumber' => $queue_number,
         ]);
     }
 
-    public function store(UserQueueRequest $request, AddUserQueue $addUserQueue)
+    public function store(UserQueueRequest $request, AddUserQueue $addUserQueue): RedirectResponse
     {
         $addUserQueue->handle($request->validated());
 

@@ -1,6 +1,5 @@
 import { Link } from "@inertiajs/react";
 import React from "react";
-import PaginationButton from "./pagination-button";
 import { Button } from "./ui/button";
 
 interface PaginationProps {

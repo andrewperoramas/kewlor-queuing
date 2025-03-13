@@ -4,7 +4,6 @@ import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
-import useUserStore from '@/stores/useUserQueueStore';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
@@ -24,10 +23,8 @@ const ManageSingleQueue = ({
         userQueue: App.Data.UserQueueData
         setIsUpdated: any;
     }) => {
-    // const { user } = useUserStore();
-    //
 
-    const handleDoneCheckboxClick = (e: any) => {
+    const handleDoneCheckboxClick = () => {
         if (data.status == 'completed') {
             setData('status', 'queued')
         } else {

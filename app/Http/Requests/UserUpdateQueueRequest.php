@@ -30,11 +30,4 @@ final class UserUpdateQueueRequest extends FormRequest
             'status' => 'required|string',
         ];
     }
-
-    public function messages()
-    {
-        return [
-
-        ];
-    }
 }

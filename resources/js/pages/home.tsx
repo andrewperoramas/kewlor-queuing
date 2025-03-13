@@ -8,7 +8,6 @@ import toast from 'react-hot-toast';
 import Pagination from '@/components/pagination';
 import { PaginatedCollection } from '@/types/global';
 import { Card } from '@/components/ui/card';
-import { Collapsible } from '@/components/ui/collapsible';
 import { Badge } from '@/components/ui/badge';
 import HeadingSmall from '@/components/heading-small';
 
