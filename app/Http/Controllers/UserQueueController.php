@@ -46,7 +46,17 @@ final class UserQueueController extends Controller
 
     public function store(UserQueueRequest $request, AddUserQueue $addUserQueue): RedirectResponse
     {
-        $addUserQueue->handle($request->validated());
+        /**
+            @var array{
+                id: int,
+                status: string,
+                queue_number: int,
+                notes: string
+            } $data
+         */
+        $data = $request->validated();
+
+        $addUserQueue->handle($data);
 
         session()->flash('message.success', 'You have been added to the queue!');
 

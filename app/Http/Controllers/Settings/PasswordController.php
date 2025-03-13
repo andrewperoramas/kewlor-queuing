@@ -21,23 +21,35 @@ final class PasswordController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('settings/password', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => optional($request->user()) instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
         ]);
     }
 
-    /**
-     * Update the user's password.
-     */
     public function update(Request $request): RedirectResponse
     {
+        /**
+          @var array{
+              current_password: string,
+              password: string,
+              password_confirmation: string
+          } $validated
+         */
         $validated = $request->validate([
             'current_password' => ['required', 'current_password'],
             'password' => ['required', Password::defaults(), 'confirmed'],
         ]);
 
-        $request->user()->update([
-            'password' => Hash::make($validated['password']),
+        $password = $validated['password'];
+
+        $user = $request->user();
+
+        if (! $user) {
+            abort(403, 'Unauthorized');
+        }
+
+        $user->update([
+            'password' => Hash::make($password),
         ]);
 
         return back();

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use Illuminate\Support\Facades\DB;
+use Inertia\Inertia;
 
 final class RemoveUserQueue
 {
@@ -23,7 +24,7 @@ final class RemoveUserQueue
                     ->where('queue_number', '>=', $queueNumber)
                     ->decrement('queue_number');
 
-                inertia()->clearHistory();
+                Inertia::clearHistory();
 
                 // Delete the record with the specified queue_number
                 /* DB::table('user_queues') */

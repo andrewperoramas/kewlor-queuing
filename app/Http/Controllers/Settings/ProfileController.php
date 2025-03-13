@@ -21,7 +21,7 @@ final class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('settings/profile', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'mustVerifyEmail' => optional($request->user()) instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
         ]);
     }
@@ -31,13 +31,18 @@ final class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $user = $request->user();
+        if (! $user) {
+            abort(403, 'Unauthorized'); // Or redirect with an error message
         }
 
-        $request->user()->save();
+        $user->fill($request->validated());
+
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+
+        $user->save();
 
         return to_route('profile.edit');
     }
@@ -52,11 +57,12 @@ final class ProfileController extends Controller
         ]);
 
         $user = $request->user();
+        if (! $user) {
+            abort(403, 'Unauthorized'); // Prevents calling delete() on null
+        }
 
         Auth::logout();
-
         $user->delete();
-
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 

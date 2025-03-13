@@ -10,6 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 final class AddUserQueue
 {
+    /**
+     * @param array{
+     *  queue_number: int,
+     *  status: string,
+    } $data
+     */
     public function handle($data): ?UserQueue
     {
         $userQueue = null;
