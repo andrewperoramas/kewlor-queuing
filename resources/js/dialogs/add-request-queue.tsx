@@ -30,12 +30,12 @@ const AddRequestQueue = () => {
         post(route('queue.store'), {
             onSuccess: () => {
                 setOpen(false);
+                window.location.reload();
             },
-            preserveScroll: true,
         });
-
         reset();
         clearErrors();
+
     };
 
     return (

@@ -1,4 +1,4 @@
-import { Deferred, Head, usePage, usePoll } from '@inertiajs/react';
+import { Deferred, Head, router, usePage, usePoll } from '@inertiajs/react';
 import { useEffect } from 'react';
 
 import AddRequestQueue from '@/dialogs/add-request-queue';
@@ -59,7 +59,7 @@ export default function Home({
                     <>
                         <h1>Hi {user.name}</h1>
 
-                        {currentUserQueueNumber > 0 && <>queue number: {currentUserQueueNumber}</>}
+                        { currentUserQueueNumber > 0 &&  <>queue number: {currentUserQueueNumber}</>}
 
                         <AddRequestQueue />
 

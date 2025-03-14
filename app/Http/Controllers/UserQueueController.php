@@ -19,7 +19,7 @@ final class UserQueueController extends Controller
     {
         /** @var array<string, string> $data */
         $data = $request->validate([
-            'email' => ['required', 'email'],
+            'email' => ['email'],
         ]);
 
         $email = $data['email'] ?? null;
