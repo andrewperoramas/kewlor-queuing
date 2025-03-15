@@ -45,7 +45,7 @@ const Pagination: React.FC<PaginationProps> = ({ links, target = "scroll-target"
                                     target={target}
                                 >
                                     <Button className={`
-                                ${link.active ? "bg-black text-white" : "bg-white text-black hover:bg-gray-50"}
+                                ${link.active ? "bg-black hover:bg-black text-white" : "bg-white text-black hover:bg-gray-50"}
 `}>{link.label}</Button>
                                 </Link>
                             </li>
