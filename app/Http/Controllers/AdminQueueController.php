@@ -40,6 +40,8 @@ final class AdminQueueController extends Controller
                 status: string,
                 queue_number: int,
                 notes: string
+                initial_queue_number: int,
+                is_boosted: boolean
             } $data
          */
         $data = $userUpdateQueueRequest->validated();

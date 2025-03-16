@@ -11,6 +11,7 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import HeadingSmall from '@/components/heading-small';
 import GuestLayout from '@/layouts/guest-layout';
+import { FlameIcon } from 'lucide-react';
 
 export default function Home({
     userQueues ,
@@ -70,12 +71,32 @@ export default function Home({
                             <ul className="my-4 grid w-full gap-4">
                                 {userQueues?.data?.length > 0 &&
                                     userQueues?.data.map((userQueue, index) => (
-                                        <Card className="bg-white border-0" key={index}>
+                                        <Card
+
+                                                    className={`
+
+relative
+${userQueue.is_boosted && 'bg-violet-500'}
+${userQueue.status === 'completed' ? 'bg-green-200' : 'bg-white'}
+
+ border-0`}
+
+                                                    key={index}>
+
+                                                    { userQueue.status === 'completed'  &&
+                                                    <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-green-600 text-white   text-red-500">
+                                                        DONE
+
+                                                    </div>
+                                                    }
+
+
+
                                                 <div className="grid md:grid-cols-3 grid-cols-1 items-center ">
                                                     <div className="pl-4 flex">
-                                                        { userQueue.queue_number !== 0 ?
-<Badge className="mr-2 bg-black text-white"> #{userQueue.initial_queue_number} </Badge> : <Badge className="mr-2" variant="destructive"> completed </Badge>
-                                                        }
+    <Badge className="mr-2 bg-black text-white"> #{userQueue.initial_queue_number} </Badge>
+            {userQueue.is_boosted && <Badge className="mr-2 bg-violet-500 text-white"> <FlameIcon className="text-orange-300"/> BOOSTED </Badge>
+                                                            }
 
                                                         <span className="text-black">
 

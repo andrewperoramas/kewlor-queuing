@@ -12,6 +12,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 type ManageSingleQueueForm = {
     notes: string;
     queue_number: number;
+    initial_queue_number: number;
+    is_boosted: boolean;
     status: string;
     id: number;
 };
@@ -38,7 +40,9 @@ const ManageSingleQueue = ({
         notes: userQueue?.admin_notes ?? '',
         id: userQueue?.id,
         status:  userQueue?.status ?? 'queued',
-        queue_number: userQueue?.queue_number
+        queue_number: userQueue?.queue_number,
+        is_boosted: userQueue?.is_boosted,
+        initial_queue_number: userQueue?.initial_queue_number
     });
 
     const submit: FormEventHandler = (e) => {
@@ -61,15 +65,33 @@ const ManageSingleQueue = ({
             <DialogContent
  className="dark:bg-white dark:text-black"
             >
-                <DialogTitle>Add your name on queue</DialogTitle>
+                <DialogTitle>Manage queue</DialogTitle>
                 <form className="flex flex-col gap-6" onSubmit={submit}>
 
-            <div className="grid gap-2">
+                <div className="grid gap-2">
+                        <div className="flex items-center">
+                            <Label htmlFor="name">ID </Label>
+                        </div>
+                        <Input
+                            id="initial_queue_number"
+                            className="mt-4 block  w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
+                            value={data.initial_queue_number}
+                            onChange={(e) => setData('initial_queue_number', parseInt(e.target.value))}
+                            required
+                            type="number"
+                            tabIndex={1}
+                            autoComplete="current-name"
+                            placeholder="Queue Number"
+                        />
+                        {errors.initial_queue_number && <InputError message={errors?.initial_queue_number} />}
 
+                    </div>
+
+
+                <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="name">Current Queue</Label>
                         </div>
-
                         <Input
                             id="queue_number"
                             className="mt-4 block  w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
@@ -107,11 +129,22 @@ const ManageSingleQueue = ({
 
                     <div className="flex items-center space-x-3">
                         <Checkbox
+                            id="is_boosted"
+                            name="is_boosted"
+                            checked={data.is_boosted}
+                            onClick={() => setData('is_boosted', !data.is_boosted)}
+                            tabIndex={3}
+                        />
+                        <Label htmlFor="is_boosted">Boosted?</Label>
+                    </div>
+
+                    <div className="flex items-center space-x-3">
+                        <Checkbox
                             id="status"
                             name="status"
                             checked={data.status === 'completed'}
                             disabled={processing}
-                            onClick={(e) => handleDoneCheckboxClick(e)}
+                            onClick={() => handleDoneCheckboxClick()}
                             tabIndex={3}
                         />
                         <Label htmlFor="status">Marked as complete</Label>

@@ -24,22 +24,22 @@ final class UserQueueController extends Controller
 
         $email = $data['email'] ?? null;
         $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0;
-        $perPage = 10;
+        /* $perPage = 10; */
 
-        $activeQueues = UserQueue::active()->orderBy('created_at');
-        $inactiveQueues = UserQueue::completed()->orderBy('created_at');
+        /* $activeQueues = UserQueue::active()->orderBy('created_at'); */
+        /* $inactiveQueues = UserQueue::completed()->orderBy('created_at'); */
 
-        $combinedQueues = $activeQueues->union($inactiveQueues);
+        /* $combinedQueues = $activeQueues->union($inactiveQueues); */
 
-        $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
-            ->mergeBindings($combinedQueues->getQuery())
-            ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END')
-            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END")
-            ->orderBy('queue_number')
-            ->paginate($perPage);
+        /* $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined")) */
+        /*     ->mergeBindings($combinedQueues->getQuery()) */
+        /*     ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END') */
+        /*     ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END") */
+        /*     ->orderBy('queue_number') */
+        /*     ->paginate($perPage); */
 
         return Inertia::render('home', [
-            'userQueues' => Inertia::defer(fn (): array => UserQueueData::collect($combinedQueues)->toArray()),
+            'userQueues' => Inertia::defer(fn (): array => UserQueueData::collect(UserQueue::query()->orderBy('queue_number')->paginate(10))->toArray()),
             'currentUserQueueNumber' => $queue_number,
         ]);
     }

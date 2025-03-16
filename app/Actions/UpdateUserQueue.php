@@ -24,6 +24,7 @@ final class UpdateUserQueue
             $queueId = $data['id'];
             $newStatus = $data['status'];
             $newQueueNumber = $data['queue_number'];
+            $isBoosted = $data['is_boosted'];
             $newInitialQueueNumber = $data['initial_queue_number'];
             $adminNotes = $data['notes'];
 
@@ -42,6 +43,7 @@ final class UpdateUserQueue
             $queue->update([
                 'status' => $newStatus,
                 'admin_notes' => $adminNotes,
+                'is_boosted' => $isBoosted,
                 'queue_number' => $newQueueNumber,
                 'initial_queue_number' => $newInitialQueueNumber,
             ]);
