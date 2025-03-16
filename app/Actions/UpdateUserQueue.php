@@ -24,6 +24,7 @@ final class UpdateUserQueue
             $queueId = $data['id'];
             $newStatus = $data['status'];
             $newQueueNumber = $data['queue_number'];
+            $newInitialQueueNumber = $data['initial_queue_number'];
             $adminNotes = $data['notes'];
 
             $queue = UserQueue::find($queueId);
@@ -42,6 +43,7 @@ final class UpdateUserQueue
                 'status' => $newStatus,
                 'admin_notes' => $adminNotes,
                 'queue_number' => $newQueueNumber,
+                'initial_queue_number' => $newInitialQueueNumber,
             ]);
 
             if ($newQueueNumber === $currentQueueNumber) {

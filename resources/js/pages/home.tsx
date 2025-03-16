@@ -74,7 +74,7 @@ export default function Home({
                                                 <div className="grid md:grid-cols-3 grid-cols-1 items-center ">
                                                     <div className="pl-4 flex">
                                                         { userQueue.queue_number !== 0 ?
-<Badge className="mr-2 bg-black text-white"> #{userQueue.queue_number} </Badge> : <Badge className="mr-2" variant="destructive"> completed </Badge>
+<Badge className="mr-2 bg-black text-white"> #{userQueue.initial_queue_number} </Badge> : <Badge className="mr-2" variant="destructive"> completed </Badge>
                                                         }
 
                                                         <span className="text-black">

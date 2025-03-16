@@ -15,6 +15,8 @@ final class UserQueueData extends Data
         public int $id,
         public string $name,
         public int $queue_number,
+        public int $initial_queue_number,
+        public bool $is_boosted,
         public string $message,
         public ?string $admin_notes,
         public string $email,
