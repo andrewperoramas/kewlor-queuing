@@ -40,7 +40,7 @@ const AddRequestQueue = () => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <Button className="font-bold bg-black text-white hover:bg-gray"  onClick={() => setOpen(true)}>ADD YOUR NAME TO THE QUEUE</Button>
+            <Button className="font-bold bg-black font-open text-white hover:bg-gray"  onClick={() => setOpen(true)}>ADD YOUR NAME TO THE QUEUE</Button>
             <DialogContent
  className="dark:bg-white dark:text-black"
             >

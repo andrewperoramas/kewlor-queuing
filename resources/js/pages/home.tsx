@@ -1,4 +1,4 @@
-import { Deferred, Head, router, usePage, usePoll } from '@inertiajs/react';
+import { Deferred, Head, usePage, usePoll } from '@inertiajs/react';
 import { useEffect } from 'react';
 
 import AddRequestQueue from '@/dialogs/add-request-queue';
@@ -9,7 +9,6 @@ import Pagination from '@/components/pagination';
 import { PaginatedCollection } from '@/types/global';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import HeadingSmall from '@/components/heading-small';
 import GuestLayout from '@/layouts/guest-layout';
 import { FlameIcon } from 'lucide-react';
 
