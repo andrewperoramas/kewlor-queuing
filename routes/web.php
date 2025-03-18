@@ -24,7 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 
     Route::post('/live/settings', [ LiveSettingsController::class, 'update'] )->name('live.settings.update');
 
-    Route::post('/queue/skip/{id}', SkipUserController::class);
+    Route::post('/queue/skip/{id}', SkipUserController::class)->name('admin.queue.skip');
 });
 
 Route::get('debug', function (): void {

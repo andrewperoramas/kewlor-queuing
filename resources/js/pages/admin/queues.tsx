@@ -89,6 +89,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.message}</td>
                                         <td className="px-6 py-4 whitespace-nowrap">{userQueue.queue_number}</td>
+                                        <td className="px-6 py-4 whitespace-nowrap"><Link href={route('admin.queue.skip', userQueue.id)} method="post">Skip</Link></td>
                                         <td className="px-6 py-4 whitespace-nowrap">{<ManageSingleQueue setIsUpdated={setIsUpdated} userQueue={userQueue}  />}</td>
                                     </tr>
                                 ))}
