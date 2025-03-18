@@ -3,7 +3,9 @@
 declare(strict_types=1);
 
 use App\Actions\AddUserQueue;
+use App\Actions\SkipUserQueue;
 use App\Models\User;
+use App\Models\UserQueue;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
@@ -105,5 +107,30 @@ it('queues correctly', function (): void {
     $queues = get('/admin/queues')->assertInertia(fn (Assert $page): Illuminate\Testing\Fluent\AssertableJson => $page
         ->has('userQueues.data', 0)
     );
+
+});
+
+test('user skipped can register again', function () {
+
+    $post = post('queue', [
+        'email' => 'test2@yahoo.com',
+        'name' => 'test',
+        'message' => 'test',
+    ]);
+    /* dd($post->assertSessionHas('message.success')); */
+
+    $app = app(SkipUserQueue::class);
+
+    $app->handle(UserQueue::latest()->first()->id);
+
+    $post = post('queue', [
+        'email' => 'test2@yahoo.com',
+        'name' => 'test',
+        'message' => 'test',
+    ]);
+
+
+$post->assertSessionHas('message.success');
+
 
 });

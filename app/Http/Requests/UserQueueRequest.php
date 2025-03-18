@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\UserQueueStatus;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -34,7 +35,7 @@ final class UserQueueRequest extends FormRequest
         return [
             'name' => 'required',
             'email' => Rule::unique('user_queues')->where(
-                fn (Builder $query) => $query->where('queue_number', '>', 0)),
+                fn (Builder $query) => $query->where('queue_number', '>', 0)->where('status', '!=',UserQueueStatus::SKIPPED ) ),
             'message' => 'required',
         ];
     }

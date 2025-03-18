@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\AdminFinishedQueueController;
 use App\Http\Controllers\AdminQueueController;
 use App\Http\Controllers\LiveSettingsController;
+use App\Http\Controllers\SkipUserController;
 use App\Http\Controllers\UserQueueController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -22,6 +23,8 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
 
     Route::post('/live/settings', [ LiveSettingsController::class, 'update'] )->name('live.settings.update');
+
+    Route::post('/queue/skip/{id}', SkipUserController::class);
 });
 
 Route::get('debug', function (): void {
