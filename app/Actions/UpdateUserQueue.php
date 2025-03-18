@@ -73,7 +73,7 @@ final class UpdateUserQueue
 
             if ($existingQueue) {
                 $maxQueueNumber = (int) (DB::table('user_queues')->max('queue_number'));
-                $temporaryQueueNumber = (int) $maxQueueNumber;
+                $temporaryQueueNumber = $maxQueueNumber;
                 DB::table('user_queues')
                     ->where('id', $existingQueue->id)
                     ->update(['queue_number' => $temporaryQueueNumber]);

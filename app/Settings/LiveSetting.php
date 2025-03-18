@@ -6,9 +6,9 @@ use Spatie\LaravelSettings\Settings;
 
 class LiveSetting extends Settings
 {
-    public ?string $date;
+    public ?string $date = null;
 
-    public ?string $schedule;
+    public ?string $schedule = null;
 
     public static function group(): string
     {

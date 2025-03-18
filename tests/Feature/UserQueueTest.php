@@ -110,7 +110,7 @@ it('queues correctly', function (): void {
 
 });
 
-test('user skipped can register again', function () {
+test('user skipped can register again', function (): void {
 
     $post = post('queue', [
         'email' => 'test2@yahoo.com',

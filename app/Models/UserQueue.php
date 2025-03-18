@@ -20,7 +20,7 @@ final class UserQueue extends Model
     public function scopeActive(Builder $query): void
     {
         $query->where('queue_number', '>=', 1)
-        ->where(function ($query) {
+        ->where(function ($query): void {
             $query->where('status', UserQueueStatus::COMPLETED)
                   ->orWhere('status', UserQueueStatus::QUEUED);
 

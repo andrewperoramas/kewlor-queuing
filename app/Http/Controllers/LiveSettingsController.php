@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class LiveSettingsController extends Controller
 {
-    public function update(Request $request, LiveSetting $liveSetting, SaveLiveSettings $saveLiveSettings)
+    public function update(Request $request, LiveSetting $liveSetting, SaveLiveSettings $saveLiveSettings): void
     {
 
         $data = $request->validate([
