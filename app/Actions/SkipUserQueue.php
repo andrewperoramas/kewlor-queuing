@@ -20,6 +20,7 @@ final class SkipUserQueue
         DB::transaction(function () use ($id, $syncQueue): void {
             $userQueue = UserQueue::find($id);
             $userQueue->status = UserQueueStatus::SKIPPED;
+            $userQueue->queue_number = 0;
             $userQueue->save();
             $syncQueue->handle();
         });

@@ -122,11 +122,18 @@ export default function Home({
                                         className={`
                                             relative
                                             ${userQueue.is_boosted && 'bg-violet-500'}
-                                            ${userQueue.status === 'completed' ? 'bg-green-200' : 'bg-white'}
+                                            ${userQueue.status === 'completed' ? 'bg-green-200' : userQueue.status === 'skipped' && userQueue.queue_number === 0 ? 'bg-red-200 text-white' : 'bg-white'}
                                             border-0
                                         `}
                                         key={index}
                                     >
+
+                                        {userQueue.status ==='skipped' && userQueue.queue_number === 0 && (
+                                            <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-red-300 text-white text-red-500">
+                                                SKIPPED
+                                            </div>
+                                        )}
+
                                         {userQueue.queue_number !== 0 && (
                                             <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-black text-white text-red-500">
                                                 QUEUE NUMBER: {userQueue.queue_number}

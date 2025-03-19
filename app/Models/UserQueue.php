@@ -48,7 +48,12 @@ final class UserQueue extends Model
      */
     public function scopeCompleted(Builder $query): void
     {
-        $query->where('status', UserQueueStatus::COMPLETED->value);
+        $query->where('status', UserQueueStatus::COMPLETED->value)->orWhere('status', UserQueueStatus::SKIPPED->value);
+    }
+
+    public function scopeSkipped(Builder $query): void
+    {
+        $query->where('status', UserQueueStatus::SKIPPED->value);
     }
 
     /**

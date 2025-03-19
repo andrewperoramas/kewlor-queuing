@@ -10,13 +10,10 @@ use App\Actions\LikeQueue;
 use App\Data\UserQueueData;
 use App\Http\Requests\UserQueueRequest;
 use App\Models\UserQueue;
-use App\UserQueueStatus;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
-use Log;
 
 final class UserQueueController extends Controller
 {
@@ -30,35 +27,37 @@ final class UserQueueController extends Controller
 
         /* $email = $data['email'] ?? null; */
         /* $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0; */
-        /* $perPage = 10; */
+        $perPage = 10;
 
-        /* $activeQueues = UserQueue::active()->orderBy('created_at'); */
-        /* $inactiveQueues = UserQueue::completed()->orderBy('created_at'); */
-
-        /* $combinedQueues = $activeQueues->union($inactiveQueues); */
-
-        /* $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined")) */
-        /*     ->mergeBindings($combinedQueues->getQuery()) */
-        /*     ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END') */
-        /*     ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END") */
-        /*     ->orderBy('queue_number') */
-        /*     ->paginate($perPage); */
-        Log::info($data);
-
-        $userQueues = UserQueue::query()->where(function (Builder $query): void {
-            $query->where('status', UserQueueStatus::QUEUED)
-                ->orWhere('status', UserQueueStatus::COMPLETED);
-        })
-            ->orderBy('queue_number');
-
+        $activeQueues = UserQueue::active()->orderBy('created_at');
+        $inactiveQueues = UserQueue::skipped()->orderBy('created_at');
         if (! empty($data['search'])) {
-            Log::info($data['search']);
-            $userQueues->where('name', 'like', "%{$data['search']}%");
+            $activeQueues = $activeQueues->where('name', 'like', "%{$data['search']}%");
+            $inactiveQueues = $inactiveQueues->where('name', 'like', "%{$data['search']}%");
         }
 
+        $combinedQueues = $activeQueues->union($inactiveQueues);
+
+        $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
+            ->mergeBindings($combinedQueues->getQuery())
+            ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END')
+            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END")
+            ->orderBy('queue_number')
+            ->paginate($perPage);
+
+        // Calculate likes_count and dislikes_count for each item
+        $combinedQueues->getCollection()->transform(function ($item) {
+            $userQueue = UserQueue::find($item->id); // Retrieve the UserQueue model
+            $item->likes_count = $userQueue->likes_count; // Use the accessor
+            $item->dislikes_count = $userQueue->dislikes_count; // Use the accessor
+
+            return $item;
+        });
+
         return Inertia::render('home', [
-            'userQueues' => UserQueueData::collect($userQueues->paginate(10)),
+            'userQueues' => UserQueueData::collect($combinedQueues),
         ]);
+
     }
 
     public function store(UserQueueRequest $request, AddUserQueue $addUserQueue): RedirectResponse
