@@ -1,5 +1,5 @@
 declare namespace App {
-export type UserQueueStatus = 'queued' | 'archived' | 'completed';
+export type UserQueueStatus = 'queued' | 'skipped' | 'archived' | 'completed';
 }
 declare namespace App.Data {
 export type UserQueueData = {
@@ -10,7 +10,8 @@ initial_queue_number: number;
 is_boosted: boolean;
 message: string;
 admin_notes: string | null;
-email: string;
 status: App.UserQueueStatus;
+likes_count: number;
+dislikes_count: number;
 };
 }

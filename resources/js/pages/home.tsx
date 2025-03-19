@@ -1,4 +1,4 @@
-import { Head, router, usePage, usePoll } from '@inertiajs/react';
+import { Head, Link, router, usePage, usePoll } from '@inertiajs/react';
 import React, { useEffect, useState, useRef } from 'react';
 import AddRequestQueue from '@/dialogs/add-request-queue';
 import toast from 'react-hot-toast';
@@ -130,6 +130,27 @@ export default function Home({
                                         {userQueue.queue_number !== 0 && (
                                             <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-black text-white text-red-500">
                                                 QUEUE NUMBER: {userQueue.queue_number}
+                                            </div>
+                                        )}
+
+
+                                        {(
+                                            <div className="absolute top-0 right-0 mr-10 flex font-extrabold font-open px-4  text-black space-x-2">
+                                                <Link method="post"
+
+                                                        className="flex items-center space-x-2"
+                                                    href={route('queue.like', {
+                                                    user_queue_id: userQueue.id
+                                                })}> <span> {userQueue.likes_count} </span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" width="24" height="24" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke="currentColor">
+  <path d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"></path>
+</svg></Link>
+
+                                                <Link method="post"
+
+                                                        className="flex items-center space-x-2"
+                                                    href={route('queue.dislike', {
+                                                    user_queue_id: userQueue.id
+                                                })}><span> {userQueue.dislikes_count} </span> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" stroke-width="2"> <path d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"></path> </svg> </Link>
                                             </div>
                                         )}
 

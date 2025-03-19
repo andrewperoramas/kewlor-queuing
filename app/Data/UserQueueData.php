@@ -19,7 +19,10 @@ final class UserQueueData extends Data
         public bool $is_boosted,
         public string $message,
         public ?string $admin_notes,
-        public string $email,
         public UserQueueStatus $status,
+
+        // custom
+        public int $likes_count,
+        public int $dislikes_count,
     ) {}
 }

@@ -1,20 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use App\Models\UserQueue;
-use App\Settings\LiveSetting;
 use App\UserQueueStatus;
 use Illuminate\Support\Facades\DB;
 
-class SkipUserQueue
+final class SkipUserQueue
 {
     /**
-    * @param array{
-    *  id: int,
-    * } $data
-    */
-
+     * @param array{
+     *  id: int,
+     * } $data
+     */
     public function handle(int $id, SyncQueue $syncQueue): void
     {
         DB::transaction(function () use ($id, $syncQueue): void {

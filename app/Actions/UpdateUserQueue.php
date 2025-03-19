@@ -62,6 +62,7 @@ final class UpdateUserQueue
                 /*     ->decrement('queue_number'); */
 
                 $syncQueue->handle();
+
                 return;
             }
 
@@ -108,5 +109,4 @@ final class UpdateUserQueue
 
         });
     }
-
 }

@@ -33,9 +33,9 @@ final class UserQueueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'email' => Rule::unique('user_queues')->where(
-                fn (Builder $query) => $query->where('queue_number', '>', 0)->where('status', '!=',UserQueueStatus::SKIPPED ) ),
+            'email' => 'nullable',
+            'name' => [Rule::unique('user_queues')->where(
+                fn (Builder $query) => $query->where('queue_number', '>', 0)->where('status', '!=', UserQueueStatus::SKIPPED)), 'required'],
             'message' => 'required',
         ];
     }
@@ -46,7 +46,7 @@ final class UserQueueRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'email.unique' => 'You already have pending request. Please wait for response from our team.',
+            'name.unique' => 'You already have pending request. Please wait for response from our team.',
         ];
     }
 }

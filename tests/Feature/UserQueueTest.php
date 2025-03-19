@@ -65,7 +65,7 @@ it('cannot add duplicated email', function (): void {
     ]);
 
     $post->assertSessionHasErrors([
-        'email',
+        'name',
     ]);
 });
 
@@ -73,7 +73,7 @@ it('queues correctly', function (): void {
 
     $post = post('queue', [
         'email' => 'test1@yahoo.com',
-        'name' => 'test',
+        'name' => 'testv',
         'message' => 'test',
     ]);
 
@@ -85,7 +85,7 @@ it('queues correctly', function (): void {
 
     $post = post('queue', [
         'email' => 'test3@yahoo.com',
-        'name' => 'test',
+        'name' => 'testz',
         'message' => 'test',
     ]);
 
@@ -130,8 +130,6 @@ test('user skipped can register again', function (): void {
         'message' => 'test',
     ]);
 
-
-$post->assertSessionHas('message.success');
-
+    $post->assertSessionHas('message.success');
 
 });

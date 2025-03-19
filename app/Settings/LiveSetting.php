@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Settings;
 
 use Spatie\LaravelSettings\Settings;
 
-class LiveSetting extends Settings
+final class LiveSetting extends Settings
 {
     public ?string $date = null;
 

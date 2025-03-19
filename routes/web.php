@@ -13,6 +13,9 @@ use Inertia\Inertia;
 Route::get('/', [UserQueueController::class, 'index'])->name('home');
 Route::post('queue', [UserQueueController::class, 'store'])->name('queue.store');
 
+Route::post('/queue/like', [UserQueueController::class, 'like'])->name('queue.like');
+Route::post('/queue/dislike', [UserQueueController::class, 'dislike'])->name('queue.dislike');
+
 Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::get('dashboard', fn () => Inertia::render('dashboard'))->name('dashboard');
 
@@ -22,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 
     Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
 
-    Route::post('/live/settings', [ LiveSettingsController::class, 'update'] )->name('live.settings.update');
+    Route::post('/live/settings', [LiveSettingsController::class, 'update'])->name('live.settings.update');
 
     Route::post('/queue/skip/{id}', SkipUserController::class)->name('admin.queue.skip');
 });

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\AddUserQueue;
+use App\Actions\DislikeQueue;
+use App\Actions\LikeQueue;
 use App\Data\UserQueueData;
 use App\Http\Requests\UserQueueRequest;
 use App\Models\UserQueue;
@@ -14,6 +16,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Log;
 
 final class UserQueueController extends Controller
 {
@@ -40,16 +43,16 @@ final class UserQueueController extends Controller
         /*     ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END") */
         /*     ->orderBy('queue_number') */
         /*     ->paginate($perPage); */
-        \Log::info($data);
+        Log::info($data);
 
-        $userQueues = UserQueue::query()->where(function (Builder $query ): void {
+        $userQueues = UserQueue::query()->where(function (Builder $query): void {
             $query->where('status', UserQueueStatus::QUEUED)
-            ->orWhere('status', UserQueueStatus::COMPLETED);
+                ->orWhere('status', UserQueueStatus::COMPLETED);
         })
-        ->orderBy('queue_number');
+            ->orderBy('queue_number');
 
-        if (!empty($data['search'])) {
-            \Log::info($data['search']);
+        if (! empty($data['search'])) {
+            Log::info($data['search']);
             $userQueues->where('name', 'like', "%{$data['search']}%");
         }
 
@@ -75,5 +78,35 @@ final class UserQueueController extends Controller
         session()->flash('message.success', 'You have been added to the queue!');
 
         return redirect()->back();
+    }
+
+    public function like(Request $request, LikeQueue $likeQueue): void
+    {
+
+        $data = $request->validate([
+            'user_queue_id' => ['required', 'exists:user_queues,id',
+            ],
+        ],
+
+        );
+
+        $data['ip_address'] = $request->ip();
+
+        $likeQueue->handle($data);
+
+    }
+
+    public function dislike(Request $request, DislikeQueue $dislikeQueue): void
+    {
+
+        $data = $request->validate([
+            'user_queue_id' => ['required', 'exists:user_queues,id',
+
+            ],
+        ]);
+
+        $data['ip_address'] = $request->ip();
+
+        $dislikeQueue->handle($data);
     }
 }
