@@ -135,7 +135,7 @@ export default function Home({
 
 
                                         {(
-                                            <div className="absolute top-0 right-0 mr-10 flex font-extrabold font-open px-4  text-black space-x-2">
+                                            <div className="absolute mt-2 top-0 right-0 mr-10 flex font-extrabold font-open px-4  text-black space-x-2">
                                                 <Link method="post"
 
                                                         className="flex items-center space-x-2"
