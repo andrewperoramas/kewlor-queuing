@@ -8,6 +8,8 @@ use App\Actions\AddUserQueue;
 use App\Data\UserQueueData;
 use App\Http\Requests\UserQueueRequest;
 use App\Models\UserQueue;
+use App\UserQueueStatus;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,11 +21,12 @@ final class UserQueueController extends Controller
     {
         /** @var array<string, string> $data */
         $data = $request->validate([
-            'email' => ['email'],
+            'search' => ['string', 'nullable'],
+            'page' => ['string', 'nullable'],
         ]);
 
-        $email = $data['email'] ?? null;
-        $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0;
+        /* $email = $data['email'] ?? null; */
+        /* $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0; */
         /* $perPage = 10; */
 
         /* $activeQueues = UserQueue::active()->orderBy('created_at'); */
@@ -37,10 +40,21 @@ final class UserQueueController extends Controller
         /*     ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END") */
         /*     ->orderBy('queue_number') */
         /*     ->paginate($perPage); */
+        \Log::info($data);
+
+        $userQueues = UserQueue::query()->where(function (Builder $query ) {
+            $query->where('status', UserQueueStatus::QUEUED)
+            ->orWhere('status', UserQueueStatus::COMPLETED);
+        })
+        ->orderBy('queue_number');
+
+        if (!empty($data['search'])) {
+            \Log::info($data['search']);
+            $userQueues->where('name', 'like', "%{$data['search']}%");
+        }
 
         return Inertia::render('home', [
-            'userQueues' => Inertia::defer(fn (): array => UserQueueData::collect(UserQueue::query()->orderBy('queue_number')->paginate(10))->toArray()),
-            'currentUserQueueNumber' => $queue_number,
+            'userQueues' => UserQueueData::collect($userQueues->paginate(10)),
         ]);
     }
 

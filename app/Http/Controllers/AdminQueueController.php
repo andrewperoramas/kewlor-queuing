@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\RemoveUserQueue;
+use App\Actions\SyncQueue;
 use App\Actions\UpdateUserQueue;
 use App\Data\UserQueueData;
 use App\Http\Requests\UserUpdateQueueRequest;
@@ -32,7 +33,7 @@ final class AdminQueueController extends Controller
         return redirect()->back();
     }
 
-    public function update(UserUpdateQueueRequest $userUpdateQueueRequest, UpdateUserQueue $updateUserQueue): RedirectResponse
+    public function update(UserUpdateQueueRequest $userUpdateQueueRequest, UpdateUserQueue $updateUserQueue, SyncQueue $syncQueue): RedirectResponse
     {
         /**
             @var array{
@@ -45,7 +46,7 @@ final class AdminQueueController extends Controller
             } $data
          */
         $data = $userUpdateQueueRequest->validated();
-        $updateUserQueue->handle($data);
+        $updateUserQueue->handle($data, $syncQueue);
         session()->flash('message.success', 'Queue has been updated!');
         Inertia::clearHistory();
 

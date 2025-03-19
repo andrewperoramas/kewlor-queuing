@@ -18,9 +18,9 @@ final class UpdateUserQueue
      *     notes: string
      * } $data
      */
-    public function handle(array $data): void
+    public function handle(array $data, SyncQueue $syncQueue): void
     {
-        DB::transaction(function () use ($data): void {
+        DB::transaction(function () use ($data, $syncQueue): void {
             $queueId = $data['id'];
             $newStatus = $data['status'];
             $newQueueNumber = $data['queue_number'];
@@ -57,12 +57,11 @@ final class UpdateUserQueue
             }
 
             if ($newStatus === 'completed') {
-                DB::table('user_queues')
-                    ->where('queue_number', '>', $currentQueueNumber)
-                    ->decrement('queue_number');
+                /* DB::table('user_queues') */
+                /*     ->where('queue_number', '>', $currentQueueNumber) */
+                /*     ->decrement('queue_number'); */
 
-                $this->renumberQueues();
-
+                $syncQueue->handle();
                 return;
             }
 
@@ -105,25 +104,9 @@ final class UpdateUserQueue
                     ->update(['queue_number' => $newQueueNumber + 1]);
             }
 
-            $this->renumberQueues();
+            $syncQueue->handle();
+
         });
     }
 
-    /**
-     * Renumber all non-completed queues to ensure they are sequential.
-     */
-    private function renumberQueues(): void
-    {
-        $queues = DB::table('user_queues')
-            ->where('status', '!=', 'completed')
-            ->orderBy('queue_number')
-            ->get();
-
-        /** @var object{id: int, queue_number: int} $queue */
-        foreach ($queues as $index => $queue) {
-            DB::table('user_queues')
-                ->where('id', $queue->id)
-                ->update(['queue_number' => $index + 1]);
-        }
-    }
 }

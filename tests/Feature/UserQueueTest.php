@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\AddUserQueue;
 use App\Actions\SkipUserQueue;
+use App\Actions\SyncQueue;
 use App\Models\User;
 use App\Models\UserQueue;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -121,7 +122,7 @@ test('user skipped can register again', function (): void {
 
     $app = app(SkipUserQueue::class);
 
-    $app->handle(UserQueue::latest()->first()->id);
+    $app->handle(UserQueue::latest()->first()->id, app(SyncQueue::class));
 
     $post = post('queue', [
         'email' => 'test2@yahoo.com',

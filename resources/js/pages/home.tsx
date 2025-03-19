@@ -1,9 +1,6 @@
-import { Deferred, Head, usePage, usePoll } from '@inertiajs/react';
-import { useEffect } from 'react';
-
+import { Head, router, usePage, usePoll } from '@inertiajs/react';
+import React, { useEffect, useState, useRef } from 'react';
 import AddRequestQueue from '@/dialogs/add-request-queue';
-import AddUserQueue from '@/forms/add-user-queue';
-import useUserStore from '@/stores/useUserQueueStore';
 import toast from 'react-hot-toast';
 import Pagination from '@/components/pagination';
 import { PaginatedCollection } from '@/types/global';
@@ -11,25 +8,41 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import GuestLayout from '@/layouts/guest-layout';
 import { FlameIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 export default function Home({
-    userQueues ,
+    userQueues,
     currentUserQueueNumber = 0,
 }: {
     userQueues: PaginatedCollection<App.Data.UserQueueData>;
     currentUserQueueNumber: number;
 }) {
-    const { user } = useUserStore();
+    const [searchValue, setSearchValue] = useState("");
+    const [currentPage, setCurrentPage] = useState(1);
 
-    usePoll(2000, {
-        only: ['userQueues', 'currentUserQueueNumber'],
-        data: {
-            email: user?.email,
-        },
+    // Use a ref to store the latest value of currentPage
+    const currentPageRef = useRef(currentPage);
+    currentPageRef.current = currentPage;
+
+    // Use usePoll to periodically fetch data
+    usePoll(4000, () => {
+        router.get(
+            route('home'),
+            {
+                search: searchValue,
+                page: currentPageRef.current, // Use the ref to get the latest value of currentPage
+            },
+            {
+                preserveState: true,
+                replace: true,
+                only: ['userQueues'],
+            }
+        );
     });
 
     const { flash }: any = usePage().props;
 
+    // Handle flash messages
     useEffect(() => {
         if (flash?.message?.success) {
             toast.success(flash.message.success, {
@@ -46,95 +59,131 @@ export default function Home({
         }
     }, [flash]);
 
+    // Debounce the search input and reset pagination to 1
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setCurrentPage(1); // Reset pagination to page 1
+            router.get(
+                route('home'),
+                { search: searchValue, page: 1 }, // Ensure page is reset to 1
+                {
+                    preserveState: true,
+                    replace: true,
+                }
+            );
+        }, 500);
+
+        return () => clearTimeout(timer);
+    }, [searchValue]);
+
+    // Handle pagination changes
+    const handlePageChange = (url: string) => {
+        const urlObj = new URL(url, window.location.origin);
+        const page = urlObj.searchParams.get("page") || "1"; // Extract page number from URL
+        setCurrentPage(Number(page)); // Update currentPage state
+        router.get(
+            route('home'),
+            { search: searchValue, page: Number(page) }, // Include search and page parameters
+            {
+                preserveState: true,
+                replace: true,
+            }
+        );
+    };
+
     return (
-        <GuestLayout guestName={user?.name}>
+        <GuestLayout guestName={""}>
             <Head title="Home">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <div className="flex  flex-col items-center justify-center gap-2 bg-[#FDFDFC]  text-[#1b1b18] ">
-                {!user?.name ? (
-                    <AddUserQueue />
-                ) : (
+            <div className="flex flex-col items-center justify-center gap-2 bg-[#FDFDFC] text-[#1b1b18]">
+                <>
+                    {currentUserQueueNumber > 0 && <>queue number: {currentUserQueueNumber}</>}
+
+                    <div className="w-full flex justify-end">
+                        <AddRequestQueue />
+                    </div>
+
+                    <div>
+                        <Input
+                            placeholder="Search username"
+                            value={searchValue} // Controlled input
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
+                        />
+                    </div>
+
                     <>
-                        { currentUserQueueNumber > 0 &&  <>queue number: {currentUserQueueNumber}</>}
+                        <ul className="my-4 grid w-full gap-4">
+                            {userQueues?.data?.length > 0 &&
+                                userQueues.data.map((userQueue, index) => (
+                                    <Card
+                                        className={`
+                                            relative
+                                            ${userQueue.is_boosted && 'bg-violet-500'}
+                                            ${userQueue.status === 'completed' ? 'bg-green-200' : 'bg-white'}
+                                            border-0
+                                        `}
+                                        key={index}
+                                    >
+                                        {userQueue.queue_number !== 0 && (
+                                            <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-black text-white text-red-500">
+                                                QUEUE NUMBER: {userQueue.queue_number}
+                                            </div>
+                                        )}
 
-                            <div className="w-full flex justify-end">
+                                        {userQueue.status === 'completed' && (
+                                            <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-green-600 text-white text-red-500">
+                                                DONE
+                                            </div>
+                                        )}
 
-                            <AddRequestQueue />
-                            </div>
+                                        <div className="grid md:grid-cols-3 grid-cols-1 items-center">
+                                            <div className="pl-4 flex">
+                                                <Badge className="mr-2 bg-black text-white">
+                                                    #{userQueue.initial_queue_number}
+                                                </Badge>
+                                                {userQueue.is_boosted && (
+                                                    <Badge className="mr-2 bg-violet-500 text-white">
+                                                        <FlameIcon className="text-orange-300" /> BOOSTED
+                                                    </Badge>
+                                                )}
+                                                <span className="text-black">{userQueue.name}</span>
+                                            </div>
 
-                        <Deferred data="userQueues" fallback={<div className="h-[800px] w-full block"></div>}>
-                                <>
-                            <ul className="my-4 grid w-full gap-4">
-                                {userQueues?.data?.length > 0 &&
-                                    userQueues?.data.map((userQueue, index) => (
-                                        <Card
+                                            {userQueue.message && (
+                                                <div className="pl-4">
+                                                    <h3 className="mr-2 inline-block text-black mb-0.5 text-base font-medium">
+                                                        Message:
+                                                    </h3>
+                                                    <p className="inline-block text-muted-foreground text-sm">
+                                                        {userQueue.message}
+                                                    </p>
+                                                </div>
+                                            )}
 
-                                                    className={`
+                                            {userQueue.admin_notes && (
+                                                <div className="pl-4">
+                                                    <h3 className="inline-block mr-2 text-black mb-0.5 text-base font-medium">
+                                                        Notes
+                                                    </h3>
+                                                    <p className="inline-block text-muted-foreground text-sm">
+                                                        {userQueue.admin_notes}
+                                                    </p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </Card>
+                                ))}
+                        </ul>
 
-relative
-${userQueue.is_boosted && 'bg-violet-500'}
-${userQueue.status === 'completed' ? 'bg-green-200' : 'bg-white'}
-
- border-0`}
-
-                                                    key={index}>
-
-                                                    { userQueue.status === 'completed'  &&
-                                                    <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-green-600 text-white   text-red-500">
-                                                        DONE
-
-                                                    </div>
-                                                    }
-
-
-
-                                                <div className="grid md:grid-cols-3 grid-cols-1 items-center ">
-                                                    <div className="pl-4 flex">
-    <Badge className="mr-2 bg-black text-white"> #{userQueue.initial_queue_number} </Badge>
-            {userQueue.is_boosted && <Badge className="mr-2 bg-violet-500 text-white"> <FlameIcon className="text-orange-300"/> BOOSTED </Badge>
-                                                            }
-
-                                                        <span className="text-black">
-
-                                                        {userQueue.name}
-                                                        </span>
-                                                    </div>
-
-
-
-                                                    {
-                                                        userQueue.message &&
-                                                        <div className="pl-4">
-                                                            <h3 className="mr-2 inline-block text-black mb-0.5 text-base font-medium">Message:</h3>
-                                                            <p className="inline-block text-muted-foreground text-sm">{userQueue.message}</p>
-                                                        </div>
-
-                                                    }
-
-
-                                                    {
-                                                        userQueue.admin_notes &&
-                                                        <div className="pl-4">
-                                                            <h3 className="inline-block mr-2 text-black mb-0.5 text-base font-medium">Notes</h3>
-                                                            <p className="inline-block text-muted-foreground text-sm">{userQueue.admin_notes}</p>
-                                                        </div>
-
-                                                    }
-</div>
-
-                                        </Card>
-                                    ))}
-                            </ul>
-
-
-                          <Pagination links={userQueues?.links} />
-                        </>
-                        </Deferred>
+                        <Pagination
+                            links={userQueues?.links}
+                            onPageChange={handlePageChange} // Pass the page change handler
+                        />
                     </>
-                )}
+                </>
             </div>
         </GuestLayout>
     );

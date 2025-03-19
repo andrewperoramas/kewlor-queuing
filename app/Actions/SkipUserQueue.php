@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\UserQueue;
 use App\Settings\LiveSetting;
 use App\UserQueueStatus;
+use Illuminate\Support\Facades\DB;
 
 class SkipUserQueue
 {
@@ -14,10 +15,14 @@ class SkipUserQueue
     * } $data
     */
 
-    public function handle(int $id): void
+    public function handle(int $id, SyncQueue $syncQueue): void
     {
-        $userQueue = UserQueue::find($id);
-        $userQueue->status = UserQueueStatus::SKIPPED;
-        $userQueue->save();
+        DB::transaction(function () use ($id, $syncQueue) {
+            $userQueue = UserQueue::find($id);
+            $userQueue->status = UserQueueStatus::SKIPPED;
+            $userQueue->save();
+            $syncQueue->handle();
+        });
+
     }
 }

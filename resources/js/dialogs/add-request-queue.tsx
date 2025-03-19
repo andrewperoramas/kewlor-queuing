@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import useUserStore from '@/stores/useUserQueueStore';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 
 type UserRequestForm = {
     message: string;
@@ -15,14 +16,13 @@ type UserRequestForm = {
 };
 
 const AddRequestQueue = () => {
-    const { user } = useUserStore();
 
     const [open, setOpen] = React.useState(false);
 
     const { data, setData, post, processing, errors, reset, clearErrors } = useForm<Required<UserRequestForm>>({
         message: '',
-        email: user?.email ?? '',
-        name: user?.name ?? '',
+        email: '',
+        name: '',
     });
 
     const submit: FormEventHandler = (e) => {
@@ -30,7 +30,7 @@ const AddRequestQueue = () => {
         post(route('queue.store'), {
             onSuccess: () => {
                 setOpen(false);
-                window.location.reload();
+                // window.location.reload();
             },
         });
         reset();
@@ -50,6 +50,24 @@ const AddRequestQueue = () => {
                         <div className="flex items-center">
                             <Label htmlFor="name">Request</Label>
                         </div>
+                <div className="grid gap-2 mt-4">
+                    <div className="flex items-center">
+                        <Label htmlFor="name">Tiktok Username</Label>
+                    </div>
+                    <Input
+                        id="name"
+                        type="text"
+                        required
+                        tabIndex={1}
+                        autoComplete="current-name"
+                                className="border-0 shadow-sm"
+                        value={data.name}
+                        onChange={(e) => setData('name', e.target.value)}
+                        placeholder="Name"
+                    />
+                    <InputError message={errors.name} />
+                </div>
+
                         <textarea
                             id="name"
                             className="mt-4 block h-30 w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
@@ -66,6 +84,23 @@ const AddRequestQueue = () => {
 
                         {errors.name && <InputError message={errors?.name} />}
                     </div>
+
+                <div className="grid gap-2">
+                    <Label htmlFor="email">Email address (Optional)</Label>
+                    <Input
+                        id="email"
+                        type="email"
+                        autoFocus
+                        tabIndex={2}
+                            className="border-0 shadow-sm"
+                        autoComplete="email"
+                        value={data.email}
+                        onChange={(e) => setData('email', e.target.value)}
+                        placeholder="email@example.com"
+                    />
+                    <InputError message={errors.email} />
+                </div>
+
                     <Button  type="submit" className=" hover:bg-gray bg-black text-white mt-4 w-full" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Join
