@@ -17,7 +17,7 @@ class SkipUserQueue
 
     public function handle(int $id, SyncQueue $syncQueue): void
     {
-        DB::transaction(function () use ($id, $syncQueue) {
+        DB::transaction(function () use ($id, $syncQueue): void {
             $userQueue = UserQueue::find($id);
             $userQueue->status = UserQueueStatus::SKIPPED;
             $userQueue->save();

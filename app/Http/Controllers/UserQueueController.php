@@ -42,7 +42,7 @@ final class UserQueueController extends Controller
         /*     ->paginate($perPage); */
         \Log::info($data);
 
-        $userQueues = UserQueue::query()->where(function (Builder $query ) {
+        $userQueues = UserQueue::query()->where(function (Builder $query ): void {
             $query->where('status', UserQueueStatus::QUEUED)
             ->orWhere('status', UserQueueStatus::COMPLETED);
         })
