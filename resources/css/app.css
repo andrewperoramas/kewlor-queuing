@@ -159,3 +159,39 @@
         @apply bg-background text-foreground;
     }
 }
+
+.responsive-table {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.responsive-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.responsive-table th,
+.responsive-table td {
+    padding: 12px;
+    text-align: left;
+    word-break: break-word; /* Ensures long words break and wrap */
+    overflow-wrap: break-word; /* Ensures text wraps within the cell */
+    max-width: 200px; /* Adjust this value as needed */
+}
+
+.responsive-table th {
+    background-color: #f8f9fa; /* Light background for headers */
+    font-weight: bold;
+}
+
+.responsive-table tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.responsive-table td:nth-child(2) { /* Adjust the nth-child value to target the correct column */
+    max-width: 300px; /* Adjust this value as needed */
+}
+
+/* .responsive-table tr:hover { */
+/*     background-color: #f1f1f1; /1* Hover effect for rows *1/ */
+/* } */

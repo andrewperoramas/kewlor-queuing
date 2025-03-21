@@ -11,6 +11,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 
 type ManageSingleQueueForm = {
     notes: string;
+    message: string;
     queue_number: number;
     initial_queue_number: number;
     is_boosted: boolean;
@@ -38,6 +39,7 @@ const ManageSingleQueue = ({
 
     const { data, setData, post, processing, errors, clearErrors } = useForm<Required<ManageSingleQueueForm>>({
         notes: userQueue?.admin_notes ?? '',
+        message: userQueue?.message ?? '',
         id: userQueue?.id,
         status:  userQueue?.status ?? 'queued',
         queue_number: userQueue?.queue_number,
@@ -104,6 +106,25 @@ const ManageSingleQueue = ({
                             placeholder="Queue Number"
                         />
                         {errors.queue_number && <InputError message={errors?.queue_number} />}
+
+                    </div>
+
+                    <div className="grid gap-2">
+
+                        <div className="flex items-center">
+                            <Label htmlFor="name">Prompt</Label>
+                        </div>
+
+                        <textarea
+                            id="name"
+                            className="mt-4 block h-30 w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
+                            value={data.message}
+                            onChange={(e) => setData('message', e.target.value)}
+                            tabIndex={1}
+                            autoComplete="current-name"
+                            placeholder="Message"
+                        />
+                        {errors.message && <InputError message={errors?.message} />}
 
                     </div>
 
