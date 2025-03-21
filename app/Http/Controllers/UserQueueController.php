@@ -29,7 +29,7 @@ final class UserQueueController extends Controller
         /* $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0; */
         $perPage = 10;
 
-        $activeQueues = UserQueue::active()->orderBy('created_at');
+        $activeQueues = UserQueue::showOnLive()->orderBy('created_at');
         $inactiveQueues = UserQueue::skipped()->orderBy('created_at');
         if (! empty($data['search'])) {
             $activeQueues = $activeQueues->where('name', 'like', "%{$data['search']}%");
@@ -40,9 +40,17 @@ final class UserQueueController extends Controller
 
         $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
             ->mergeBindings($combinedQueues->getQuery())
-            ->orderByRaw('CASE WHEN queue_number = 0 THEN 1 ELSE 0 END')
-            ->orderByRaw("CASE WHEN status = 'completed' THEN 1 ELSE 0 END")
-            ->orderBy('queue_number')
+            ->orderByRaw("CASE
+        WHEN status = 'completed' THEN 1
+        WHEN status = 'queued' THEN 2
+        WHEN status = 'skipped' THEN 3
+        ELSE 4
+    END")
+    ->orderByRaw("CASE
+        WHEN status = 'queued' THEN queue_number
+        ELSE NULL
+    END")
+
             ->paginate($perPage);
 
         // Calculate likes_count and dislikes_count for each item

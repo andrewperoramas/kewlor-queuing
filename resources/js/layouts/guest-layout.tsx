@@ -18,7 +18,7 @@ export default ({ children, guestName }: AppLayoutProps) => {
   const settings = page.props.settings ?? { date: "2024-01-01", schedule: "9am - 5pm" };
 
     return (
-    <div className="bg-white h-screen text-black">
+    <div className="  text-black">
         <div className="max-w-[1360px] w-full mx-auto">
             <div className="flex pt-8 justify-between">
                 <div className="flex space-x-2">
