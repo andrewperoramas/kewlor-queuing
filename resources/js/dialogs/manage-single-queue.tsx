@@ -2,12 +2,12 @@ import React, { FormEventHandler } from 'react';
 
 import InputError from '@/components/input-error';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
 
 type ManageSingleQueueForm = {
     notes: string;
@@ -19,19 +19,12 @@ type ManageSingleQueueForm = {
     id: number;
 };
 
-const ManageSingleQueue = ({
-    userQueue,
-    setIsUpdated
-}: {
-        userQueue: App.Data.UserQueueData
-        setIsUpdated: any;
-    }) => {
-
+const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.UserQueueData; setIsUpdated: any }) => {
     const handleDoneCheckboxClick = () => {
         if (data.status == 'completed') {
-            setData('status', 'queued')
+            setData('status', 'queued');
         } else {
-            setData('status', 'completed')
+            setData('status', 'completed');
         }
     };
 
@@ -41,10 +34,10 @@ const ManageSingleQueue = ({
         notes: userQueue?.admin_notes ?? '',
         message: userQueue?.message ?? '',
         id: userQueue?.id,
-        status:  userQueue?.status ?? 'queued',
+        status: userQueue?.status ?? 'queued',
         queue_number: userQueue?.queue_number,
         is_boosted: userQueue?.is_boosted,
-        initial_queue_number: userQueue?.initial_queue_number
+        initial_queue_number: userQueue?.initial_queue_number,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -52,7 +45,7 @@ const ManageSingleQueue = ({
         post(route('admin.queue.update', userQueue.id), {
             onSuccess: () => {
                 setOpen(false);
-                setIsUpdated(true)
+                setIsUpdated(true);
             },
             preserveScroll: true,
             // preserveState: true
@@ -63,20 +56,19 @@ const ManageSingleQueue = ({
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <Button className="bg-black text-white hover:bg-gray"  onClick={() => setOpen(true)}>Manage</Button>
-            <DialogContent
- className="dark:bg-white dark:text-black"
-            >
+            <Button className="hover:bg-gray bg-black text-white" onClick={() => setOpen(true)}>
+                Manage
+            </Button>
+            <DialogContent className="dark:bg-white dark:text-black">
                 <DialogTitle>Manage queue</DialogTitle>
                 <form className="flex flex-col gap-6" onSubmit={submit}>
-
-                <div className="grid gap-2">
+                    <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="name">ID </Label>
                         </div>
                         <Input
                             id="initial_queue_number"
-                            className="mt-4 block  w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
+                            className="mt-4 block w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
                             value={data.initial_queue_number}
                             onChange={(e) => setData('initial_queue_number', parseInt(e.target.value))}
                             required
@@ -86,17 +78,15 @@ const ManageSingleQueue = ({
                             placeholder="Queue Number"
                         />
                         {errors.initial_queue_number && <InputError message={errors?.initial_queue_number} />}
-
                     </div>
 
-
-                <div className="grid gap-2">
+                    <div className="grid gap-2">
                         <div className="flex items-center">
                             <Label htmlFor="name">Current Queue</Label>
                         </div>
                         <Input
                             id="queue_number"
-                            className="mt-4 block  w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
+                            className="mt-4 block w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
                             value={data.queue_number}
                             onChange={(e) => setData('queue_number', parseInt(e.target.value))}
                             required
@@ -106,11 +96,9 @@ const ManageSingleQueue = ({
                             placeholder="Queue Number"
                         />
                         {errors.queue_number && <InputError message={errors?.queue_number} />}
-
                     </div>
 
                     <div className="grid gap-2">
-
                         <div className="flex items-center">
                             <Label htmlFor="name">Prompt</Label>
                         </div>
@@ -125,12 +113,9 @@ const ManageSingleQueue = ({
                             placeholder="Message"
                         />
                         {errors.message && <InputError message={errors?.message} />}
-
                     </div>
 
-
                     <div className="grid gap-2">
-
                         <div className="flex items-center">
                             <Label htmlFor="name">Notes</Label>
                         </div>
@@ -145,7 +130,6 @@ const ManageSingleQueue = ({
                             placeholder="Message"
                         />
                         {errors.notes && <InputError message={errors?.notes} />}
-
                     </div>
 
                     <div className="flex items-center space-x-3">
@@ -171,7 +155,7 @@ const ManageSingleQueue = ({
                         <Label htmlFor="status">Marked as complete</Label>
                     </div>
 
-                    <Button  type="submit" className=" hover:bg-gray bg-black text-white mt-4 w-full" tabIndex={4} disabled={processing}>
+                    <Button type="submit" className="hover:bg-gray mt-4 w-full bg-black text-white" tabIndex={4} disabled={processing}>
                         {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
                         Update
                     </Button>

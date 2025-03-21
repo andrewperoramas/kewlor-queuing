@@ -1,6 +1,6 @@
-import { Link } from "@inertiajs/react";
-import React from "react";
-import { Button } from "./ui/button";
+import { Link } from '@inertiajs/react';
+import React from 'react';
+import { Button } from './ui/button';
 
 interface PaginationProps {
     links: Array<{
@@ -13,7 +13,7 @@ interface PaginationProps {
 
 const Pagination: React.FC<PaginationProps> = ({ links, onPageChange }) => {
     const mergeQueryParams = (url: string) => {
-        if (typeof window === "undefined") return url;
+        if (typeof window === 'undefined') return url;
 
         const currentParams = new URLSearchParams(window.location.search);
         const urlObj = new URL(url, window.location.origin);
@@ -35,17 +35,15 @@ const Pagination: React.FC<PaginationProps> = ({ links, onPageChange }) => {
     };
 
     return (
-        <nav className="table-responsive pb-3 pb-lg-0">
-            <ul className="flex gap-3 mb-0 align-items-center justify-content-center">
-                {links && links.length > 3 &&
+        <nav className="table-responsive pb-lg-0 pb-3">
+            <ul className="align-items-center justify-content-center mb-0 flex gap-3">
+                {links &&
+                    links.length > 3 &&
                     links.map((link, index) => {
                         if (!link.url) return null;
 
                         return (
-                            <li
-                                key={index}
-                                className={`page-item me-lg-6`}
-                            >
+                            <li key={index} className={`page-item me-lg-6`}>
                                 <Link
                                     href={mergeQueryParams(link.url)}
                                     preserveScroll={true}
@@ -58,9 +56,7 @@ const Pagination: React.FC<PaginationProps> = ({ links, onPageChange }) => {
                                     }}
                                 >
                                     <Button
-                                        className={`
-                                            ${link.active ? "bg-black hover:bg-black text-white" : "bg-white text-black hover:bg-gray-50"}
-                                        `}
+                                        className={` ${link.active ? 'bg-black text-white hover:bg-black' : 'bg-white text-black hover:bg-gray-50'} `}
                                     >
                                         {link.label}
                                     </Button>
