@@ -1,4 +1,4 @@
-import { usePage } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 import { type ReactNode } from 'react';
 
 interface AppLayoutProps {
@@ -52,6 +52,23 @@ export default ({ children, guestName }: AppLayoutProps) => {
 
             </div>
             {children}
+
+
+            <footer className="mt-10">
+                <div className="flex justify-between">
+                    <div>
+                        <p className="text-center">Copyright &copy; {new Date().getFullYear()} Kewlor's Tiktok Live. All rights reserved.</p>
+                    </div>
+
+                    <div className="flex space-x-4">
+                        <Link href="" className="text-center">Terms and Conditions</Link>
+                         <span>|</span>
+                        <Link href="" className="text-center">Privacy Policy</Link>
+                    </div>
+                </div>
+            </footer>
+
         </div>
+
     </div>
 )};

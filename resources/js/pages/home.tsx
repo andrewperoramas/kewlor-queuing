@@ -107,7 +107,7 @@ export default function Home({
                     <div>
                         <Input
                             placeholder="Search username"
-                            className="text-white"
+                            className="text-[#1b1b18] bg-white"
                             value={searchValue}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
                         />

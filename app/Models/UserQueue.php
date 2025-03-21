@@ -43,12 +43,13 @@ final class UserQueue extends Model
             });
     }
 
-    public function scopeShowOnLive(Builder $query): void {
+    public function scopeShowOnLive(Builder $query): void
+    {
         $query->where(function ($query): void {
-                $query->where('status', UserQueueStatus::COMPLETED)
-                    ->orWhere('status', UserQueueStatus::QUEUED);
+            $query->where('status', UserQueueStatus::COMPLETED)
+                ->orWhere('status', UserQueueStatus::QUEUED);
 
-            });
+        });
     }
 
     /**

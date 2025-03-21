@@ -19,7 +19,7 @@ const QueueCard = ({userQueue} : {
                                         key={userQueue.id}
                                     >
                                         {userQueue.status ==='skipped' && userQueue.queue_number === 0 && (
-                                            <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open px-4 bg-gray-300 text-white text-red-500">
+                                            <div className="absolute bottom-0 right-0 mr-10 font-extrabold font-open text-xs px-4 bg-gray-300 text-white text-red-500">
                                                 SKIPPED
                                             </div>
                                         )}
@@ -43,7 +43,7 @@ const QueueCard = ({userQueue} : {
                                                         <FlameIcon className="text-orange-300" /> BOOSTED
                                                     </Badge>
                                                 )}
-                                                <span className="text-black h-8 mt-1">{userQueue.name}</span>
+                                                <a href={`https://tiktok.com/@${userQueue.name}`} target="_blank" className="text-black h-8 mt-1">{userQueue.name}</a>
                                             </div>
 
                                             {userQueue.message && (

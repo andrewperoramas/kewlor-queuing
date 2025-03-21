@@ -41,12 +41,12 @@ final class UserQueueController extends Controller
         $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
             ->mergeBindings($combinedQueues->getQuery())
             ->orderByRaw("CASE
-        WHEN status = 'completed' THEN 1
-        WHEN status = 'queued' THEN 2
+        WHEN status = 'completed' THEN 2
+        WHEN status = 'queued' THEN 1
         WHEN status = 'skipped' THEN 3
         ELSE 4
     END")
-    ->orderByRaw("CASE
+            ->orderByRaw("CASE
         WHEN status = 'queued' THEN queue_number
         ELSE NULL
     END")
