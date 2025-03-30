@@ -20,7 +20,7 @@ export default ({ children, guestName }: AppLayoutProps) => {
     return (
     <div className="  text-black">
         <div className="max-w-[1360px] w-full mx-auto">
-            <div className="flex pt-8 justify-between">
+            <div className="flex pt-8 lg:justify-between justify-center items-center flex-col md:flex-row">
                 <div className="flex space-x-2">
                     <img src="/kewlor.jpeg" className="w-24 rounded-full" alt="logo" />
                     <div>
@@ -30,17 +30,8 @@ export default ({ children, guestName }: AppLayoutProps) => {
                     </div>
                 </div>
 
-                <div className="flex flex-col">
-
-                        <span className="text-xl">
-                    {guestName && (<>
-
-                        Hi {guestName}
-
-                    </>)}
-</span>
-
-                        <h1 className="font-bold dont-open text-2xl">
+                <div className="flex flex-col items-center md:my-0 my-4">
+                        <h1 className="font-bold font-open text-2xl">
                             {settings.date}
                         </h1>
 

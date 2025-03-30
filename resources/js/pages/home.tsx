@@ -100,7 +100,7 @@ export default function Home({
 
                     {currentUserQueueNumber > 0 && <>queue number: {currentUserQueueNumber}</>}
 
-                    <div className="w-full flex justify-end">
+                    <div className="w-full flex md:justify-end justify-center md:my-0 my-4">
                         <AddRequestQueue />
                     </div>
 
