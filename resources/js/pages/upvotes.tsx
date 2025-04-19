@@ -23,7 +23,7 @@ export default function Home({
 
     usePoll(4000, () => {
         router.get(
-            route('upvotes'),
+            route('home'),
             {
                 search: searchValue,
                 page: currentPageRef.current,
@@ -60,7 +60,7 @@ export default function Home({
         const timer = setTimeout(() => {
             setCurrentPage(1); // Reset pagination to page 1
             router.get(
-                route('upvotes'),
+                route('home'),
                 { search: searchValue, page: 1 }, // Ensure page is reset to 1
                 {
                     preserveState: true,
@@ -78,7 +78,7 @@ export default function Home({
         const page = urlObj.searchParams.get('page') || '1'; // Extract page number from URL
         setCurrentPage(Number(page)); // Update currentPage state
         router.get(
-            route('upvotes'),
+            route('home'),
             { search: searchValue, page: Number(page) }, // Include search and page parameters
             {
                 preserveState: true,
