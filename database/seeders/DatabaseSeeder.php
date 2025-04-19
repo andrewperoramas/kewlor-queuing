@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Actions\AddUserQueue;
+use App\Actions\LikeQueue;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -30,7 +31,7 @@ final class DatabaseSeeder extends Seeder
                 'name' => fake()->userName(),
                 'email' => fake()->safeEmail(),
                 'message' => fake()->words(5, true),
-            ]);
+            ], app(LikeQueue::class));
         }
     }
 }
