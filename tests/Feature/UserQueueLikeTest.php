@@ -14,7 +14,7 @@ it('can like a queue', function (): void {
     $userQueue = app(AddUserQueue::class)->handle([
         'name' => 'burat',
         'message' => 'hi there',
-    ]);
+    ], app(LikeQueue::class));
 
     app(LikeQueue::class)->handle([
         'user_queue_id' => $userQueue->id,
@@ -36,7 +36,8 @@ it('can dislike a queue via routes', function (): void {
     $userQueue = app(AddUserQueue::class)->handle([
         'name' => 'burat',
         'message' => 'hi there',
-    ]);
+
+    ], app(LikeQueue::class));
 
     post(route('queue.dislike'), [
         'user_queue_id' => $userQueue->id,
@@ -50,7 +51,8 @@ it('can like a queue  via routes', function (): void {
     $userQueue = app(AddUserQueue::class)->handle([
         'name' => 'burat',
         'message' => 'hi there',
-    ]);
+
+    ], app(LikeQueue::class));
 
     post(route('queue.like'), [
         'user_queue_id' => $userQueue->id,
@@ -64,7 +66,7 @@ it('can dislike a queue', function (): void {
     $userQueue = app(AddUserQueue::class)->handle([
         'name' => 'burat',
         'message' => 'hi there',
-    ]);
+    ], app(LikeQueue::class));
 
     app(DislikeQueue::class)->handle([
         'user_queue_id' => $userQueue->id,
