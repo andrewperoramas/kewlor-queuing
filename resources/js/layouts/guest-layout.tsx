@@ -11,7 +11,7 @@ type LiveSettings = {
   schedule: string;
 };
 
-export default ({ children, guestName }: AppLayoutProps) => {
+export default ({ children }: AppLayoutProps) => {
 
 
   const page = usePage<{ settings: LiveSettings }>();
