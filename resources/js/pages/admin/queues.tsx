@@ -90,23 +90,20 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                             <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                             <td className="whitespace px-6 py-4">{userQueue.message}</td>
                                             <td className="px-6 py-4">{userQueue.admin_notes}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{userQueue.boost_count}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                {userQueue.boost_count}
-                                            </td>
-                                                                                        <td className="px-6 py-4 whitespace-nowrap">
                                                 {userQueue.likes_count} / {userQueue.dislikes_count}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap flex space-x-2">
+                                            <td className="flex space-x-2 px-6 py-4 whitespace-nowrap">
                                                 <Link
-
-                                                        href={route('admin.queue.skip', userQueue.id)}
-    method="post"
-    as="button"
-    onClick={(e) => {
-        if (!window.confirm('Are you sure you want to skip?')) {
-            e.preventDefault();
-        }
-    }}
+                                                    href={route('admin.queue.skip', userQueue.id)}
+                                                    method="post"
+                                                    as="button"
+                                                    onClick={(e) => {
+                                                        if (!window.confirm('Are you sure you want to skip?')) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
                                                 >
                                                     Skip
                                                 </Link>
