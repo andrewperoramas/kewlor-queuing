@@ -78,6 +78,8 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                         <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Name</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Prompt</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Notes</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Boost</th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Upvotes</th>
                                         <th className="px-6 py-3 text-left text-xs font-medium tracking-wider text-gray-500 uppercase">Action</th>
                                     </tr>
                                 </thead>
@@ -89,11 +91,25 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                             <td className="whitespace px-6 py-4">{userQueue.message}</td>
                                             <td className="px-6 py-4">{userQueue.admin_notes}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                <Link href={route('admin.queue.skip', userQueue.id)} method="post">
+                                                {userQueue.boost_count}
+                                            </td>
+                                                                                        <td className="px-6 py-4 whitespace-nowrap">
+                                                {userQueue.likes_count} / {userQueue.dislikes_count}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap flex space-x-2">
+                                                <Link
+
+                                                        href={route('admin.queue.skip', userQueue.id)}
+    method="post"
+    as="button"
+    onClick={(e) => {
+        if (!window.confirm('Are you sure you want to skip?')) {
+            e.preventDefault();
+        }
+    }}
+                                                >
                                                     Skip
                                                 </Link>
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap">
                                                 {<ManageSingleQueue setIsUpdated={setIsUpdated} userQueue={userQueue} />}
                                             </td>
                                         </tr>
