@@ -56,15 +56,15 @@ final class UpdateUserQueue
             /*     throw new InvalidArgumentException('Queue number must be at least 0.'); */
             /* } */
 
-/*             if ($newStatus === 'completed') { */
-/*                 /1* DB::table('user_queues') *1/ */
-/*                 /1*     ->where('queue_number', '>', $currentQueueNumber) *1/ */
-/*                 /1*     ->decrement('queue_number'); *1/ */
+            /*             if ($newStatus === 'completed') { */
+            /*                 /1* DB::table('user_queues') *1/ */
+            /*                 /1*     ->where('queue_number', '>', $currentQueueNumber) *1/ */
+            /*                 /1*     ->decrement('queue_number'); *1/ */
 
-/*                 $syncQueue->handle(); */
+            /*                 $syncQueue->handle(); */
 
-/*                 return; */
-/*             } */
+            /*                 return; */
+            /*             } */
 
             /** @var object{id: int, queue_number: int}|null $existingQueue */
             /* $existingQueue = DB::table('user_queues') */

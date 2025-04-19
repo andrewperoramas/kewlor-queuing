@@ -32,6 +32,8 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
         }, 3000);
     };
 
+    {userQueues.links}
+
     return (
         <AppLayout>
             <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">

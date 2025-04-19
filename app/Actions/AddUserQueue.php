@@ -16,11 +16,11 @@ final class AddUserQueue
      *  status: string,
     } $data
      */
-    public function handle($data): ?UserQueue
+    public function handle($data, LikeQueue $like): ?UserQueue
     {
         $userQueue = null;
 
-        DB::transaction(function () use ($data, &$userQueue): void {
+        DB::transaction(function () use ($data, &$userQueue, $like): void {
             $lastQueueNumber = DB::table('user_queues')->where('queue_number', '>', 0)->max('queue_number');
             $newQueueNumber = $lastQueueNumber + 1;
 
@@ -28,6 +28,11 @@ final class AddUserQueue
             $data['initial_queue_number'] = $newQueueNumber;
             $data['status'] = UserQueueStatus::QUEUED;
             $userQueue = UserQueue::create($data);
+
+            $like->handle([
+                'user_queue_id' => $userQueue->id,
+                'ip_address' => request()->ip(),
+            ]);
         });
 
         return $userQueue;
