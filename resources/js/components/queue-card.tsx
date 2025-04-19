@@ -19,14 +19,9 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
                 <div className="font-open absolute right-0 bottom-0 mr-10 bg-green-600 px-4 text-xs font-extrabold text-red-500 text-white">DONE</div>
             )}
 
-            <div className="mt-1 grid grid-cols-1 md:grid-cols-[300px_1fr_1fr_130px]">
+            <div className="mt-1 grid grid-cols-1 md:grid-cols-[300px_1fr_1fr_1fr]">
                 <div className="flex flex-wrap pl-4">
                     <Badge className="mr-2 h-9 rounded-xl bg-black px-3 text-lg font-bold text-white">#{userQueue.row_number}</Badge>
-                    {userQueue.boost_count > 0 && (
-                        <Badge className="mr-2 h-9 rounded-xl bg-violet-500 px-2 font-bold text-white">
-                            <FlameIcon className="text-orange-300" /> BOOSTED
-                        </Badge>
-                    )}
                     <a href={`https://tiktok.com/@${userQueue.name}`} target="_blank" className="mt-1 h-8 text-black">
                         {userQueue.name}
                     </a>
@@ -48,8 +43,8 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
                     )}
                 </div>
 
-                <div>
-                    <div className="font-open flex space-x-2 px-4 font-extrabold text-black">
+                <div className="justify-center items-end flex flex-col">
+                    <div className="font-open flex space-x-2 px-4 font-extrabold text-black ">
                         <Link
                             method="post"
                             preserveState
@@ -102,12 +97,20 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
                             </svg>{' '}
                         </Link>
                     </div>
+                        <div className="px-4 text-[#028a85] flex space-x-1">
+                            {
+                            userQueue.boost_count > 0 &&
+                            <>
+                            <p className="text-sm font-thin flex items-center text-yellow-700">
+<svg  xmlns="http://www.w3.org/2000/svg"   viewBox="0 0 24 24"  fill="currentColor"  className="h-4 w-4 icon icon-tabler icons-tabler-filled icon-tabler-bolt"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M13 2l.018 .001l.016 .001l.083 .005l.011 .002h.011l.038 .009l.052 .008l.016 .006l.011 .001l.029 .011l.052 .014l.019 .009l.015 .004l.028 .014l.04 .017l.021 .012l.022 .01l.023 .015l.031 .017l.034 .024l.018 .011l.013 .012l.024 .017l.038 .034l.022 .017l.008 .01l.014 .012l.036 .041l.026 .027l.006 .009c.12 .147 .196 .322 .218 .513l.001 .012l.002 .041l.004 .064v6h5a1 1 0 0 1 .868 1.497l-.06 .091l-8 11c-.568 .783 -1.808 .38 -1.808 -.588v-6h-5a1 1 0 0 1 -.868 -1.497l.06 -.091l8 -11l.01 -.013l.018 -.024l.033 -.038l.018 -.022l.009 -.008l.013 -.014l.04 -.036l.028 -.026l.008 -.006a1 1 0 0 1 .402 -.199l.011 -.001l.027 -.005l.074 -.013l.011 -.001l.041 -.002z" /></svg>
+                                        {userQueue.boost_count}</p>
 
-                    {userQueue.queue_number !== 0 && (
-                        <div className="px-4 text-[#028a85]">
-                            <p className="text-sm font-thin">ORIGINAL# {userQueue.initial_queue_number}</p>
+                        <div className="text-black">|</div>
+</>
+                            }
+
+                            <p className="text-sm font-thin flex items-center">ORIGINAL# {userQueue.initial_queue_number}</p>
                         </div>
-                    )}
                 </div>
             </div>
         </Card>
