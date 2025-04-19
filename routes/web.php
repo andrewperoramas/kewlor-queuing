@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', [UserQueueController::class, 'index'])->name('home');
+Route::get('/upvotes', [UserQueueController::class, 'upvotes'])->name('upvotes');
 Route::post('queue', [UserQueueController::class, 'store'])->name('queue.store');
 
 Route::post('/queue/like', [UserQueueController::class, 'like'])->name('queue.like');

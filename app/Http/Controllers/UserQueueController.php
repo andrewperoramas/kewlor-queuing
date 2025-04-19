@@ -68,6 +68,61 @@ final class UserQueueController extends Controller
 
     }
 
+
+
+    public function upvotes(Request $request): \Inertia\Response
+    {
+        /** @var array<string, string> $data */
+        $data = $request->validate([
+            'search' => ['string', 'nullable'],
+            'page' => ['string', 'nullable'],
+        ]);
+
+        /* $email = $data['email'] ?? null; */
+        /* $queue_number = UserQueue::query()->active()->where('email', $email)->value('queue_number') ?? 0; */
+        $perPage = 10;
+
+        /* $activeQueues = UserQueue::showOnLive()->orderBy('created_at'); */
+
+        $activeQueues = UserQueue::showOnLive()
+            ->orderBy('created_at')
+            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'is_boosted', 'message', 'initial_queue_number', 'queue_number',
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count')
+            );
+
+        $inactiveQueues = UserQueue::skipped()
+            ->orderBy('created_at')
+            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'is_boosted', 'message', 'initial_queue_number', 'queue_number',
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count')
+            );
+
+        if (! empty($data['search'])) {
+            $activeQueues = $activeQueues->where('name', 'like', "%{$data['search']}%");
+            $inactiveQueues = $inactiveQueues->where('name', 'like', "%{$data['search']}%");
+        }
+
+        $combinedQueues = $activeQueues->union($inactiveQueues);
+
+        $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
+            ->mergeBindings($combinedQueues->getQuery())
+            ->orderByRaw("CASE
+        WHEN status = 'completed' THEN 2
+        WHEN status = 'queued' THEN 1
+        WHEN status = 'skipped' THEN 3
+        ELSE 5
+    END")
+            ->orderByDesc('likes_count')
+            ->orderBy('dislikes_count')
+            ->paginate($perPage);
+
+        return Inertia::render('upvotes', [
+            'userQueues' => UserQueueData::collect($combinedQueues),
+        ]);
+
+    }
+
     public function store(UserQueueRequest $request, AddUserQueue $addUserQueue): RedirectResponse
     {
         /**
