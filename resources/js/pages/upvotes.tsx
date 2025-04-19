@@ -1,12 +1,12 @@
-import { Head,  router, usePage, usePoll } from '@inertiajs/react';
-import React, { useEffect, useState, useRef } from 'react';
-import AddRequestQueue from '@/dialogs/add-request-queue';
-import toast from 'react-hot-toast';
 import Pagination from '@/components/pagination';
-import { PaginatedCollection } from '@/types/global';
-import GuestLayout from '@/layouts/guest-layout';
-import { Input } from '@/components/ui/input';
 import QueueCard from '@/components/queue-card';
+import { Input } from '@/components/ui/input';
+import AddRequestQueue from '@/dialogs/add-request-queue';
+import GuestLayout from '@/layouts/guest-layout';
+import { PaginatedCollection } from '@/types/global';
+import { Head, router, usePage, usePoll } from '@inertiajs/react';
+import React, { useEffect, useRef, useState } from 'react';
+import toast from 'react-hot-toast';
 
 export default function Home({
     userQueues,
@@ -15,7 +15,7 @@ export default function Home({
     userQueues: PaginatedCollection<App.Data.UserQueueData>;
     currentUserQueueNumber: number;
 }) {
-    const [searchValue, setSearchValue] = useState("");
+    const [searchValue, setSearchValue] = useState('');
     const [currentPage, setCurrentPage] = useState(1);
 
     const currentPageRef = useRef(currentPage);
@@ -32,7 +32,7 @@ export default function Home({
                 // preserveState: true,
                 // replace: true,
                 only: ['userQueues'],
-            }
+            },
         );
     });
 
@@ -65,7 +65,7 @@ export default function Home({
                 {
                     preserveState: true,
                     replace: true,
-                }
+                },
             );
         }, 500);
 
@@ -75,7 +75,7 @@ export default function Home({
     // Handle pagination changes
     const handlePageChange = (url: string) => {
         const urlObj = new URL(url, window.location.origin);
-        const page = urlObj.searchParams.get("page") || "1"; // Extract page number from URL
+        const page = urlObj.searchParams.get('page') || '1'; // Extract page number from URL
         setCurrentPage(Number(page)); // Update currentPage state
         router.get(
             route('upvotes'),
@@ -84,30 +84,29 @@ export default function Home({
                 preserveState: true,
                 preserveScroll: true,
                 replace: true,
-            }
+            },
         );
     };
 
     return (
-        <GuestLayout guestName={""}>
+        <GuestLayout guestName={''}>
             <Head title="Home">
                 <link rel="preconnect" href="https://fonts.bunny.net" />
                 <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
             </Head>
 
-            <div className="flex flex-col items-center justify-center gap-2  text-[#1b1b18]">
+            <div className="flex flex-col items-center justify-center gap-2 text-[#1b1b18]">
                 <>
-
                     {currentUserQueueNumber > 0 && <>queue number: {currentUserQueueNumber}</>}
 
-                    <div className="w-full flex md:justify-end justify-center md:my-0 my-4">
+                    <div className="my-4 flex w-full justify-center md:my-0 md:justify-end">
                         <AddRequestQueue />
                     </div>
 
                     <div>
                         <Input
                             placeholder="Search username"
-                            className="text-[#1b1b18] bg-white"
+                            className="bg-white text-[#1b1b18]"
                             value={searchValue}
                             onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchValue(e.target.value)}
                         />
@@ -115,10 +114,7 @@ export default function Home({
 
                     <>
                         <ul className="my-4 grid w-full gap-4">
-                            {userQueues?.data?.length > 0 &&
-                                userQueues.data.map((userQueue) => (
-                                    <QueueCard userQueue={userQueue}/>
-                                ))}
+                            {userQueues?.data?.length > 0 && userQueues.data.map((userQueue) => <QueueCard userQueue={userQueue} />)}
                         </ul>
 
                         <Pagination

@@ -68,8 +68,6 @@ final class UserQueueController extends Controller
 
     }
 
-
-
     public function upvotes(Request $request): \Inertia\Response
     {
         /** @var array<string, string> $data */

@@ -9,7 +9,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-    --font-open: "Open Sans", sans-serif;
+    --font-open: 'Open Sans', sans-serif;
     --font-sans:
         'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
 
@@ -188,7 +188,8 @@
     border-bottom: 1px solid #ddd;
 }
 
-.responsive-table td:nth-child(2) { /* Adjust the nth-child value to target the correct column */
+.responsive-table td:nth-child(2) {
+    /* Adjust the nth-child value to target the correct column */
     max-width: 300px; /* Adjust this value as needed */
 }
 
