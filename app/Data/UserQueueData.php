@@ -16,10 +16,11 @@ final class UserQueueData extends Data
         public string $name,
         public int $queue_number,
         public int $initial_queue_number,
-        public bool $is_boosted,
+        public int $boost_count,
         public string $message,
         public ?string $admin_notes,
         public UserQueueStatus $status,
+        public ?int $row_number,
 
         // custom
         public int $likes_count,

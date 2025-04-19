@@ -82,41 +82,60 @@ final class UserQueueController extends Controller
 
         /* $activeQueues = UserQueue::showOnLive()->orderBy('created_at'); */
 
-        $activeQueues = UserQueue::showOnLive()
-            ->orderBy('created_at')
-            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'is_boosted', 'message', 'initial_queue_number', 'queue_number',
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count')
-            );
+        // Set row number variable before query
+        //
+        // Define pagination
+$perPage = 15; // or however many per page
+$currentPage = $data['page'] ?? 1;
 
-        $inactiveQueues = UserQueue::skipped()
-            ->orderBy('created_at')
-            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'is_boosted', 'message', 'initial_queue_number', 'queue_number',
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count')
-            );
+// Get active and inactive queues
+$activeQueues = UserQueue::showOnLive()
+    ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number',
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
 
-        if (! empty($data['search'])) {
-            $activeQueues = $activeQueues->where('name', 'like', "%{$data['search']}%");
-            $inactiveQueues = $inactiveQueues->where('name', 'like', "%{$data['search']}%");
-        }
 
-        $combinedQueues = $activeQueues->union($inactiveQueues);
+    );
 
-        $combinedQueues = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
-            ->mergeBindings($combinedQueues->getQuery())
-            ->orderByRaw("CASE
+$inactiveQueues = UserQueue::skipped()
+    ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number',
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
+    );
+
+if (!empty($data['search'])) {
+    $activeQueues->where('name', 'like', "%{$data['search']}%");
+    $inactiveQueues->where('name', 'like', "%{$data['search']}%");
+}
+
+// Combine queries
+$combinedQueues = $activeQueues->union($inactiveQueues);
+
+$combined = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
+    ->mergeBindings($combinedQueues->getQuery())
+    ->orderByRaw("CASE
         WHEN status = 'completed' THEN 2
         WHEN status = 'queued' THEN 1
         WHEN status = 'skipped' THEN 3
         ELSE 5
     END")
-            ->orderByDesc('likes_count')
-            ->orderBy('dislikes_count')
-            ->paginate($perPage);
+    ->orderByDesc('total_points')
+    ->orderBy('dislikes_count')
+    ->paginate($perPage, ['*'], 'page', $currentPage);
+
+// Add row number manually
+$startIndex = ($combined->currentPage() - 1) * $combined->perPage() + 1;
+
+$combined->getCollection()->transform(function ($item) use (&$startIndex) {
+    $item->row_number = $startIndex++;
+    return $item;
+});
+
 
         return Inertia::render('upvotes', [
-            'userQueues' => UserQueueData::collect($combinedQueues),
+            'userQueues' => UserQueueData::collect($combined),
         ]);
 
     }

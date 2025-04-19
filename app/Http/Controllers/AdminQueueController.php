@@ -11,6 +11,7 @@ use App\Data\UserQueueData;
 use App\Http\Requests\UserUpdateQueueRequest;
 use App\Models\UserQueue;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -18,10 +19,55 @@ final class AdminQueueController extends Controller
 {
     public function index(): Response
     {
+
+$perPage = 15; // or however many per page
+$currentPage = $data['page'] ?? 1;
+
+// Get active and inactive queues
+$activeQueues = UserQueue::showOnLive()
+    ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number',
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
+
+
+    );
+
+$inactiveQueues = UserQueue::skipped()
+    ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number',
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
+        DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
+                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
+    );
+
+
+// Combine queries
+$combinedQueues = $activeQueues->union($inactiveQueues);
+
+$combined = DB::table(DB::raw("({$combinedQueues->toSql()}) as combined"))
+    ->mergeBindings($combinedQueues->getQuery())
+    ->orderByRaw("CASE
+        WHEN status = 'completed' THEN 2
+        WHEN status = 'queued' THEN 1
+        WHEN status = 'skipped' THEN 3
+        ELSE 5
+    END")
+    ->orderByDesc('likes_count')
+    ->orderBy('dislikes_count')
+    ->paginate($perPage, ['*'], 'page', $currentPage);
+
+// Add row number manually
+$startIndex = ($combined->currentPage() - 1) * $combined->perPage() + 1;
+
+$combined->getCollection()->transform(function ($item) use (&$startIndex) {
+    $item->row_number = $startIndex++;
+    return $item;
+});
+
         return Inertia::render('admin/queues', [
-            'userQueues' => UserQueueData::collect(UserQueue::active()->limit(10)->orderBy('queue_number')->paginate(10)),
+            'userQueues' => UserQueueData::collect($combined),
             'completedQueues' => UserQueueData::collect(UserQueue::completed()->limit(10)->orderBy('queue_number')->paginate(10)),
-            'firstInQueue' => UserQueueData::optional(UserQueue::active()->orderBy('queue_number')->first()),
+            'firstInQueue' => UserQueueData::optional($combined->first()),
         ]);
     }
 
@@ -39,10 +85,9 @@ final class AdminQueueController extends Controller
             @var array{
                 id: int,
                 status: string,
-                queue_number: int,
                 notes: string
                 initial_queue_number: int,
-                is_boosted: boolean
+                boost_count: int
             } $data
          */
         $data = $userUpdateQueueRequest->validated();

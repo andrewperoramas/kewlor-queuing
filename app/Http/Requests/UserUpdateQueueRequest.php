@@ -27,9 +27,9 @@ final class UserUpdateQueueRequest extends FormRequest
             'notes' => 'nullable',
             'message' => 'required',
             'id' => 'required|integer',
-            'queue_number' => 'required|integer',
+            #'queue_number' => 'required|integer',
             'initial_queue_number' => 'required|integer',
-            'is_boosted' => 'boolean',
+            'boost_count' => 'integer',
             'status' => 'required|string',
         ];
     }

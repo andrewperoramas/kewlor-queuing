@@ -18,13 +18,12 @@ final class UpdateUserQueue
      *     notes: string
      * } $data
      */
-    public function handle(array $data, SyncQueue $syncQueue): void
+    public function handle(array $data): void
     {
-        DB::transaction(function () use ($data, $syncQueue): void {
+        DB::transaction(function () use ($data): void {
             $queueId = $data['id'];
             $newStatus = $data['status'];
-            $newQueueNumber = $data['queue_number'];
-            $isBoosted = $data['is_boosted'];
+            $boostCount = $data['boost_count'];
             $message = $data['message'];
             $newInitialQueueNumber = $data['initial_queue_number'];
             $adminNotes = $data['notes'];
@@ -39,75 +38,74 @@ final class UpdateUserQueue
                 $newQueueNumber = 0;
             }
 
-            $currentQueueNumber = $queue->queue_number;
+            /* $currentQueueNumber = $queue->queue_number; */
 
             $queue->update([
                 'status' => $newStatus,
                 'admin_notes' => $adminNotes,
                 'message' => $message,
-                'is_boosted' => $isBoosted,
-                'queue_number' => $newQueueNumber,
+                'boost_count' => $boostCount,
                 'initial_queue_number' => $newInitialQueueNumber,
             ]);
 
-            if ($newQueueNumber === $currentQueueNumber) {
-                return;
-            }
+            /* if ($newQueueNumber === $currentQueueNumber) { */
+            /*     return; */
+            /* } */
 
-            if ($newQueueNumber < 0) {
-                throw new InvalidArgumentException('Queue number must be at least 0.');
-            }
+            /* if ($newQueueNumber < 0) { */
+            /*     throw new InvalidArgumentException('Queue number must be at least 0.'); */
+            /* } */
 
-            if ($newStatus === 'completed') {
-                /* DB::table('user_queues') */
-                /*     ->where('queue_number', '>', $currentQueueNumber) */
-                /*     ->decrement('queue_number'); */
+/*             if ($newStatus === 'completed') { */
+/*                 /1* DB::table('user_queues') *1/ */
+/*                 /1*     ->where('queue_number', '>', $currentQueueNumber) *1/ */
+/*                 /1*     ->decrement('queue_number'); *1/ */
 
-                $syncQueue->handle();
+/*                 $syncQueue->handle(); */
 
-                return;
-            }
+/*                 return; */
+/*             } */
 
             /** @var object{id: int, queue_number: int}|null $existingQueue */
-            $existingQueue = DB::table('user_queues')
-                ->where('queue_number', $newQueueNumber)
-                ->first();
+            /* $existingQueue = DB::table('user_queues') */
+            /*     ->where('queue_number', $newQueueNumber) */
+            /*     ->first(); */
 
-            if ($existingQueue) {
-                $maxQueueNumber = (int) (DB::table('user_queues')->max('queue_number'));
-                $temporaryQueueNumber = $maxQueueNumber;
-                DB::table('user_queues')
-                    ->where('id', $existingQueue->id)
-                    ->update(['queue_number' => $temporaryQueueNumber]);
-            }
+            /* if ($existingQueue) { */
+            /*     $maxQueueNumber = (int) (DB::table('user_queues')->max('queue_number')); */
+            /*     $temporaryQueueNumber = $maxQueueNumber; */
+            /*     DB::table('user_queues') */
+            /*         ->where('id', $existingQueue->id) */
+            /*         ->update(['queue_number' => $temporaryQueueNumber]); */
+            /* } */
 
-            if ($newQueueNumber >= $currentQueueNumber) {
-                DB::table('user_queues')
-                    ->where('queue_number', '>', $currentQueueNumber)
-                    ->where('queue_number', '<=', $newQueueNumber)
-                    ->decrement('queue_number');
-            } else {
-                DB::table('user_queues')
-                    ->where('queue_number', '>=', $newQueueNumber)
-                    ->where('queue_number', '<', $currentQueueNumber)
-                    ->increment('queue_number');
-            }
+            /* if ($newQueueNumber >= $currentQueueNumber) { */
+            /*     DB::table('user_queues') */
+            /*         ->where('queue_number', '>', $currentQueueNumber) */
+            /*         ->where('queue_number', '<=', $newQueueNumber) */
+            /*         ->decrement('queue_number'); */
+            /* } else { */
+            /*     DB::table('user_queues') */
+            /*         ->where('queue_number', '>=', $newQueueNumber) */
+            /*         ->where('queue_number', '<', $currentQueueNumber) */
+            /*         ->increment('queue_number'); */
+            /* } */
 
-            DB::table('user_queues')
-                ->where('id', $queueId)
-                ->update(['queue_number' => $newQueueNumber]);
+            /* DB::table('user_queues') */
+            /*     ->where('id', $queueId) */
+            /*     ->update(['queue_number' => $newQueueNumber]); */
 
-            if ($existingQueue) {
-                DB::table('user_queues')
-                    ->where('queue_number', '>', $newQueueNumber)
-                    ->increment('queue_number');
+            /* if ($existingQueue) { */
+            /*     DB::table('user_queues') */
+            /*         ->where('queue_number', '>', $newQueueNumber) */
+            /*         ->increment('queue_number'); */
 
-                DB::table('user_queues')
-                    ->where('id', $existingQueue->id)
-                    ->update(['queue_number' => $newQueueNumber + 1]);
-            }
+            /*     DB::table('user_queues') */
+            /*         ->where('id', $existingQueue->id) */
+            /*         ->update(['queue_number' => $newQueueNumber + 1]); */
+            /* } */
 
-            $syncQueue->handle();
+            /* $syncQueue->handle(); */
 
         });
     }

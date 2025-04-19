@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string $email
  * @property int $queue_number
  * @property int $initial_queue_number
- * @property bool $is_boosted
+ * @property int $boost_count
  * @property string $message
  * @property string $admin_notes
  * @property string $status

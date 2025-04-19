@@ -6,7 +6,7 @@ import { Card } from './ui/card';
 const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
     return (
         <Card
-            className={`relative ${userQueue.is_boosted && 'bg-violet-500'} ${userQueue.status === 'completed' ? 'bg-green-200' : userQueue.status === 'skipped' && userQueue.queue_number === 0 ? 'bg-gray-200 text-white' : 'bg-white'} border-0 py-2`}
+            className={`relative ${userQueue.boost_count > 0 && 'bg-violet-500'} ${userQueue.status === 'completed' ? 'bg-green-200' : userQueue.status === 'skipped' && userQueue.queue_number === 0 ? 'bg-gray-200 text-white' : 'bg-white'} border-0 py-2`}
             key={userQueue.id}
         >
             {userQueue.status === 'skipped' && userQueue.queue_number === 0 && (
@@ -21,8 +21,8 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
 
             <div className="mt-1 grid grid-cols-1 md:grid-cols-[300px_1fr_1fr_130px]">
                 <div className="flex flex-wrap pl-4">
-                    <Badge className="mr-2 h-9 rounded-xl bg-black px-3 text-lg font-bold text-white">#{userQueue.queue_number}</Badge>
-                    {userQueue.is_boosted && (
+                    <Badge className="mr-2 h-9 rounded-xl bg-black px-3 text-lg font-bold text-white">#{userQueue.row_number}</Badge>
+                    {userQueue.boost_count > 0 && (
                         <Badge className="mr-2 h-9 rounded-xl bg-violet-500 px-2 font-bold text-white">
                             <FlameIcon className="text-orange-300" /> BOOSTED
                         </Badge>

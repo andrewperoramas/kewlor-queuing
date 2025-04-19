@@ -21,7 +21,7 @@ return new class extends Migration
             $table->index('queue_number');
             $table->unsignedInteger('initial_queue_number')->default(1);
             $table->index('initial_queue_number');
-            $table->boolean('is_boosted')->default(false);
+            $table->unsignedInteger('boost_count')->default(0);
             $table->text('message');
             $table->text('admin_notes')->nullable();
             $table->string('status');

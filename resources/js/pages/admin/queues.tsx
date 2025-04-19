@@ -45,14 +45,14 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                     <strong>Request:</strong> {firstInQueue.message}
                                 </p>
                                 <p>
-                                    <strong>Queue Number:</strong> {firstInQueue.queue_number}
+                                    <strong>Queue Number:</strong> {firstInQueue.row_number}
                                 </p>
                             </div>
 
                             <Link
                                 method="delete"
                                 className={`w-20 rounded-md py-2 text-center text-white ${isButtonDisabled ? 'bg-red-300' : 'bg-red-500'}`}
-                                href={route('admin.queue.destroy', firstInQueue.queue_number)}
+                                href={route('admin.queue.destroy', firstInQueue.row_number)}
                                 onClick={handleDoneClick}
                                 disabled={isButtonDisabled}
                             >
@@ -83,8 +83,8 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     {userQueues.data.map((userQueue: App.Data.UserQueueData) => (
-                                        <tr key={userQueue.queue_number}>
-                                            <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.queue_number}</td>
+                                        <tr key={userQueue.row_number}>
+                                            <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.row_number}</td>
                                             <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                             <td className="whitespace px-6 py-4">{userQueue.message}</td>
                                             <td className="px-6 py-4">{userQueue.admin_notes}</td>

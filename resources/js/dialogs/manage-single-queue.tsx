@@ -12,9 +12,8 @@ import { LoaderCircle } from 'lucide-react';
 type ManageSingleQueueForm = {
     notes: string;
     message: string;
-    queue_number: number;
     initial_queue_number: number;
-    is_boosted: boolean;
+    boost_count: number;
     status: string;
     id: number;
 };
@@ -34,9 +33,8 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
         notes: userQueue?.admin_notes ?? '',
         message: userQueue?.message ?? '',
         id: userQueue?.id,
+        boost_count: userQueue.boost_count ?? 0,
         status: userQueue?.status ?? 'queued',
-        queue_number: userQueue?.queue_number,
-        is_boosted: userQueue?.is_boosted,
         initial_queue_number: userQueue?.initial_queue_number,
     });
 
@@ -82,20 +80,20 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
 
                     <div className="grid gap-2">
                         <div className="flex items-center">
-                            <Label htmlFor="name">Current Queue</Label>
+                            <Label htmlFor="name">Boost Count </Label>
                         </div>
                         <Input
-                            id="queue_number"
+                            id="boost_count"
                             className="mt-4 block w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
-                            value={data.queue_number}
-                            onChange={(e) => setData('queue_number', parseInt(e.target.value))}
+                            value={data.boost_count}
+                            onChange={(e) => setData('boost_count', parseInt(e.target.value))}
                             required
                             type="number"
                             tabIndex={1}
                             autoComplete="current-name"
                             placeholder="Queue Number"
                         />
-                        {errors.queue_number && <InputError message={errors?.queue_number} />}
+                        {errors.boost_count && <InputError message={errors?.boost_count} />}
                     </div>
 
                     <div className="grid gap-2">
@@ -132,16 +130,6 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
                         {errors.notes && <InputError message={errors?.notes} />}
                     </div>
 
-                    <div className="flex items-center space-x-3">
-                        <Checkbox
-                            id="is_boosted"
-                            name="is_boosted"
-                            checked={data.is_boosted}
-                            onClick={() => setData('is_boosted', !data.is_boosted)}
-                            tabIndex={3}
-                        />
-                        <Label htmlFor="is_boosted">Boosted?</Label>
-                    </div>
 
                     <div className="flex items-center space-x-3">
                         <Checkbox
