@@ -24,6 +24,7 @@ final class UpdateUserQueue
             $queueId = $data['id'];
             $newStatus = $data['status'];
             $boostCount = $data['boost_count'];
+            $newQueueNumber = $data['queue_number'];
             $message = $data['message'];
             $newInitialQueueNumber = $data['initial_queue_number'];
             $adminNotes = $data['notes'];
