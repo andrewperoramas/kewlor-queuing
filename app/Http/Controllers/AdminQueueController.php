@@ -34,15 +34,15 @@ final class AdminQueueController extends Controller
             ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number', 'admin_notes', 'is_working',
                 DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
                 DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count + queue_number  AS total_points'),
+                DB::raw('- queue_number +  (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + -(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
 
             );
 
         $inactiveQueues = UserQueue::skipped()
-            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number', 'admin_notes', 'is_working',
+            ->select('user_queues.id', 'user_queues.name', 'user_queues.status', 'user_queues.created_at', 'boost_count', 'message', 'initial_queue_number', 'queue_number','admin_notes', 'is_working',
                 DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) AS likes_count'),
                 DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) AS dislikes_count'),
-                DB::raw('(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count + queue_number  AS total_points'),
+                DB::raw('   - queue_number + (SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = 1) + -(SELECT COUNT(*) FROM user_queue_votes WHERE user_queue_votes.user_queue_id = user_queues.id AND user_queue_votes.vote = -1) + boost_count  AS total_points'),
             );
 
         // Combine queries
@@ -56,8 +56,8 @@ final class AdminQueueController extends Controller
         WHEN status = 'skipped' THEN 3
         ELSE 5
     END")
-            ->orderByDesc('likes_count')
-            ->orderBy('dislikes_count')
+            ->orderByDesc('total_points')
+            ->orderByDesc('queue_number')
             ->paginate($perPage, ['*'], 'page', $currentPage);
 
         // Add row number manually

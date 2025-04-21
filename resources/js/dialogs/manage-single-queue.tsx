@@ -13,6 +13,7 @@ type ManageSingleQueueForm = {
     notes: string;
     message: string;
     initial_queue_number: number;
+    queue_number: number;
     boost_count: number;
     status: string;
     id: number;
@@ -36,6 +37,7 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
         boost_count: userQueue.boost_count ?? 0,
         status: userQueue?.status ?? 'queued',
         initial_queue_number: userQueue?.initial_queue_number,
+        queue_number: userQueue?.queue_number,
     });
 
     const submit: FormEventHandler = (e) => {
@@ -76,6 +78,24 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
                             placeholder="Queue Number"
                         />
                         {errors.initial_queue_number && <InputError message={errors?.initial_queue_number} />}
+                    </div>
+
+                    <div className="grid gap-2">
+                        <div className="flex items-center">
+                            <Label htmlFor="name">Queue Number </Label>
+                        </div>
+                        <Input
+                            id="queue_number"
+                            className="mt-4 block w-full rounded-md border-gray-300 p-3 shadow-sm sm:text-sm"
+                            value={data.queue_number}
+                            onChange={(e) => setData('queue_number', parseInt(e.target.value))}
+                            required
+                            type="number"
+                            tabIndex={1}
+                            autoComplete="current-name"
+                            placeholder="Queue Number"
+                        />
+                        {errors.queue_number && <InputError message={errors?.queue_number} />}
                     </div>
 
                     <div className="grid gap-2">
