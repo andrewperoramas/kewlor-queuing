@@ -21,6 +21,7 @@ final class SkipUserQueue
             $userQueue = UserQueue::find($id);
             $userQueue->status = UserQueueStatus::SKIPPED;
             $userQueue->queue_number = 0;
+            $userQueue->is_working = false;
             $userQueue->save();
             $syncQueue->handle();
         });
