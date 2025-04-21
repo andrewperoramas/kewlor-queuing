@@ -114,10 +114,13 @@ export default function Home({
 
                     <>
                         <ul className="my-4 grid w-full gap-4">
-
-                            {userQueues?.data?.length > 0 ? userQueues.data.map((userQueue) => <QueueCard userQueue={userQueue} />)  : <>
-                                <p className="text-center text-xl font-bold">User not found.</p>
-                            </>}
+                            {userQueues?.data?.length > 0 ? (
+                                userQueues.data.map((userQueue) => <QueueCard userQueue={userQueue} />)
+                            ) : (
+                                <>
+                                    <p className="text-center text-xl font-bold">User not found.</p>
+                                </>
+                            )}
                         </ul>
 
                         <Pagination

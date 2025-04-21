@@ -90,61 +90,51 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                             <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                             <td className="whitespace px-6 py-4">{userQueue.message}</td>
                                             <td className="px-6 py-4">{userQueue.admin_notes}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap">{userQueue.boost_count}</td>
                                             <td className="px-6 py-4 whitespace-nowrap">
-                                                {userQueue.boost_count}
-                                            </td>
-                                                                                        <td className="px-6 py-4 whitespace-nowrap">
                                                 {userQueue.likes_count} / {userQueue.dislikes_count}
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap flex space-x-2">
+                                            <td className="flex space-x-2 px-6 py-4 whitespace-nowrap">
                                                 <Link
-
-                                                    className="text-sm hover:bg-gray bg-gray-400 text-white py-1 px-2 rounded-md"
-                                                        href={route('admin.queue.skip', userQueue.id)}
-    method="post"
-    as="button"
-    onClick={(e) => {
-        if (!window.confirm('Are you sure you want to skip?')) {
-            e.preventDefault();
-        }
-    }}
+                                                    className="hover:bg-gray rounded-md bg-gray-400 px-2 py-1 text-sm text-white"
+                                                    href={route('admin.queue.skip', userQueue.id)}
+                                                    method="post"
+                                                    as="button"
+                                                    onClick={(e) => {
+                                                        if (!window.confirm('Are you sure you want to skip?')) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
                                                 >
                                                     Skip
                                                 </Link>
                                                 <Link
-
-                                                    className="text-sm hover:bg-gray bg-green-400 text-white py-1 px-2 rounded-md"
-                                                        href={route('admin.queue.mark-completed', userQueue.id)}
-    method="get"
-    as="button"
-    onClick={(e) => {
-        if (!window.confirm('Are you sure you want to complete?')) {
-            e.preventDefault();
-        }
-    }}
+                                                    className="hover:bg-gray rounded-md bg-green-400 px-2 py-1 text-sm text-white"
+                                                    href={route('admin.queue.mark-completed', userQueue.id)}
+                                                    method="get"
+                                                    as="button"
+                                                    onClick={(e) => {
+                                                        if (!window.confirm('Are you sure you want to complete?')) {
+                                                            e.preventDefault();
+                                                        }
+                                                    }}
                                                 >
                                                     Complete
                                                 </Link>
                                                 <Link
-                                                    className="text-sm hover:bg-gray bg-red-400 border-1 text-white py-1 px-2 rounded-md"
+                                                    className="hover:bg-gray rounded-md border-1 bg-red-400 px-2 py-1 text-sm text-white"
                                                     method="get"
-    as="button"
-
-
-                                                        href={route('admin.queue.working', userQueue.id)}
+                                                    as="button"
+                                                    href={route('admin.queue.working', userQueue.id)}
                                                 >
                                                     Mark as active
                                                 </Link>
 
                                                 <Link
-
-
-                                                    className="text-sm hover:bg-gray bg-red-400 border-1 text-white py-1 px-2 rounded-md"
-                                                        method="get"
-    as="button"
-
-
-                                                        href={route('admin.queue.not.working', userQueue.id)}
+                                                    className="hover:bg-gray rounded-md border-1 bg-red-400 px-2 py-1 text-sm text-white"
+                                                    method="get"
+                                                    as="button"
+                                                    href={route('admin.queue.not.working', userQueue.id)}
                                                 >
                                                     Mark as not active
                                                 </Link>

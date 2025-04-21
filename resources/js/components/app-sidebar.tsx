@@ -31,7 +31,6 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGrid,
         type: 'external',
     },
-
 ];
 
 const footerNavItems: NavItem[] = [

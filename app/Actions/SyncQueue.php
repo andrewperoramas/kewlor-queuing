@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions;
 
 use App\Models\UserQueue;
-use App\UserQueueStatus;
 use Illuminate\Support\Facades\DB;
 
 final class SyncQueue

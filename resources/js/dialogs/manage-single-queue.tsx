@@ -150,7 +150,6 @@ const ManageSingleQueue = ({ userQueue, setIsUpdated }: { userQueue: App.Data.Us
                         {errors.notes && <InputError message={errors?.notes} />}
                     </div>
 
-
                     <div className="flex items-center space-x-3">
                         <Checkbox
                             id="status"

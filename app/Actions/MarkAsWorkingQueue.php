@@ -19,7 +19,7 @@ final class MarkAsWorkingQueue
     {
         DB::transaction(function () use ($data): void {
             /* $userQueue = UserQueue::where('is_working', true)->get()->each(function ($userQueue) { */
-                /* $userQueue->update(['is_working' => false]); */
+            /* $userQueue->update(['is_working' => false]); */
             /* }); */
 
             $userQueue = UserQueue::find($data['user_queue_id']);
