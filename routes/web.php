@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\AdminFinishedQueueController;
 use App\Http\Controllers\AdminQueueController;
+use App\Http\Controllers\AdminWorkingQueueController;
 use App\Http\Controllers\LiveSettingsController;
 use App\Http\Controllers\SkipUserController;
 use App\Http\Controllers\UserQueueController;
@@ -25,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::delete('/admin/queues/{queueNumber}', [AdminQueueController::class, 'destroy'])->name('admin.queue.destroy');
 
     Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
+    Route::get('/admin/queues/working/{id}', AdminWorkingQueueController::class)->name('admin.queue.working');
 
     Route::post('/live/settings', [LiveSettingsController::class, 'update'])->name('live.settings.update');
 

@@ -8,6 +8,7 @@ name: string;
 queue_number: number;
 initial_queue_number: number;
 boost_count: number;
+is_working: boolean;
 message: string;
 admin_notes: string | null;
 status: App.UserQueueStatus;

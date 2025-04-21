@@ -85,7 +85,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                 </thead>
                                 <tbody className="divide-y divide-gray-200">
                                     {userQueues.data.map((userQueue: App.Data.UserQueueData) => (
-                                        <tr key={userQueue.row_number}>
+                                        <tr key={userQueue.row_number} className={`${userQueue.is_working && 'bg-red-400'} `}>
                                             <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.row_number}</td>
                                             <td className="w-[100px] px-6 py-4 whitespace-nowrap">{userQueue.name}</td>
                                             <td className="whitespace px-6 py-4">{userQueue.message}</td>
@@ -111,6 +111,15 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                                     Skip
                                                 </Link>
                                                 {<ManageSingleQueue setIsUpdated={setIsUpdated} userQueue={userQueue} />}
+                                                <Link
+                                                        method="get"
+    as="button"
+
+
+                                                        href={route('admin.queue.working', userQueue.id)}
+                                                >
+                                                    Mark as active
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}

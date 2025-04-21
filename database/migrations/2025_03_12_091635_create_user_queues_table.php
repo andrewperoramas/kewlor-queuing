@@ -26,6 +26,7 @@ return new class extends Migration
             $table->text('admin_notes')->nullable();
             $table->string('status');
             $table->timestamps();
+            $table->unsignedInteger('is_working')->default(0);
         });
     }
 

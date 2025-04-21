@@ -6,7 +6,7 @@ import { Card } from './ui/card';
 const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
     return (
         <Card
-            className={`relative ${userQueue.boost_count > 0 && 'bg-violet-500'} ${userQueue.status === 'completed' ? 'bg-green-200' : userQueue.status === 'skipped' && userQueue.queue_number === 0 ? 'bg-gray-200 text-white' : 'bg-white'} border-0 py-2`}
+            className={`relative ${userQueue.boost_count > 0 && 'bg-violet-500'} ${userQueue.status === 'completed' ? 'bg-green-200' : userQueue.status === 'skipped' && userQueue.queue_number === 0 ? 'bg-gray-200 text-white' : 'bg-white'} border-0 py-2 ${userQueue.is_working && 'bg-red-400'}`}
             key={userQueue.id}
         >
             {userQueue.status === 'skipped' && userQueue.queue_number === 0 && (
@@ -30,7 +30,7 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
                 {userQueue.message && (
                     <div className="pl-4">
                         <h3 className="mr-2 mb-0.5 inline-block text-base font-medium text-black">Your Prompt:</h3>
-                        <p className="text-muted-foreground inline-block text-sm">{userQueue.message}</p>
+                        <p className={`text-muted-foreground inline-block text-sm ${userQueue.is_working && 'text-white'}`}>{userQueue.message}</p>
                     </div>
                 )}
 
