@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
     Route::delete('/admin/queues/{queueNumber}', [AdminQueueController::class, 'destroy'])->name('admin.queue.destroy');
 
     Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
+    Route::get('/admin/queues/completed/{id}', AdminFinishedQueueController::class)->name('admin.queue.mark-completed');
     Route::get('/admin/queues/working/{id}', AdminWorkingQueueController::class)->name('admin.queue.working');
     Route::get('/admin/queues/not-working/{id}', [ AdminWorkingQueueController::class, 'notWorking' ])->name('admin.queue.not.working');
 

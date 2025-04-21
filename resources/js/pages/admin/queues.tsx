@@ -99,7 +99,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                             <td className="px-6 py-4 whitespace-nowrap flex space-x-2">
                                                 <Link
 
-                                                    className="text-sm hover:bg-gray bg-black text-white py-1 px-2 rounded-md"
+                                                    className="text-sm hover:bg-gray bg-gray-400 text-white py-1 px-2 rounded-md"
                                                         href={route('admin.queue.skip', userQueue.id)}
     method="post"
     as="button"
@@ -111,10 +111,23 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                                 >
                                                     Skip
                                                 </Link>
-                                                {<ManageSingleQueue setIsUpdated={setIsUpdated} userQueue={userQueue} />}
                                                 <Link
+
                                                     className="text-sm hover:bg-gray bg-green-400 text-white py-1 px-2 rounded-md"
-                                                        method="get"
+                                                        href={route('admin.queue.mark-completed', userQueue.id)}
+    method="get"
+    as="button"
+    onClick={(e) => {
+        if (!window.confirm('Are you sure you want to complete?')) {
+            e.preventDefault();
+        }
+    }}
+                                                >
+                                                    Complete
+                                                </Link>
+                                                <Link
+                                                    className="text-sm hover:bg-gray bg-red-400 border-1 text-white py-1 px-2 rounded-md"
+                                                    method="get"
     as="button"
 
 
@@ -126,7 +139,7 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                                 <Link
 
 
-                                                    className="text-sm hover:bg-gray bg-orange-400 text-white py-1 px-2 rounded-md"
+                                                    className="text-sm hover:bg-gray bg-red-400 border-1 text-white py-1 px-2 rounded-md"
                                                         method="get"
     as="button"
 
@@ -135,6 +148,8 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                                 >
                                                     Mark as not active
                                                 </Link>
+
+                                                {<ManageSingleQueue setIsUpdated={setIsUpdated} userQueue={userQueue} />}
                                             </td>
                                         </tr>
                                     ))}

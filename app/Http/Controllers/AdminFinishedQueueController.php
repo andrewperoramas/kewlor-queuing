@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\MarkAsCompletedQueue;
 use App\Actions\RemoveUserQueue;
 use App\Actions\SyncQueue;
 use App\Actions\UpdateUserQueue;
@@ -11,10 +12,20 @@ use App\Data\UserQueueData;
 use App\Http\Requests\UserUpdateQueueRequest;
 use App\Models\UserQueue;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 final class AdminFinishedQueueController extends Controller
 {
+
+    public function __invoke(int $id, MarkAsCompletedQueue $markAsCompletedQueue)
+    {
+        $markAsCompletedQueue->handle([
+            'user_queue_id' => $id,
+        ]);
+        return redirect()->back();
+    }
+
     public function index(): \Inertia\Response
     {
         return Inertia::render('admin/queues-completed', [
