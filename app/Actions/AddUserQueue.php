@@ -29,10 +29,10 @@ final class AddUserQueue
             $data['status'] = UserQueueStatus::QUEUED;
             $userQueue = UserQueue::create($data);
 
-            $like->handle([
-                'user_queue_id' => $userQueue->id,
-                'ip_address' => request()->ip(),
-            ]);
+            /* $like->handle([ */
+            /*     'user_queue_id' => $userQueue->id, */
+            /*     'ip_address' => request()->ip(), */
+            /* ]); */
         });
 
         return $userQueue;
