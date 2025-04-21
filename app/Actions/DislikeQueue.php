@@ -26,6 +26,8 @@ final class DislikeQueue
                 'ip_address' => $data['ip_address'],
             ]);
 
+            app()->make(SyncQueue::class)->handle();
+
         });
 
     }

@@ -26,6 +26,7 @@ final class LikeQueue
                 'ip_address' => $data['ip_address'],
             ]);
 
+            app()->make(SyncQueue::class)->handle();
         });
 
     }
