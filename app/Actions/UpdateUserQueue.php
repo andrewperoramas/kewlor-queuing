@@ -36,6 +36,9 @@ final class UpdateUserQueue
 
             if ($newStatus === 'completed') {
                 $newQueueNumber = 0;
+                $queue->update([
+                    'is_working' => false
+                ]);
             }
 
         $currentQueueNumber = $queue->queue_number;

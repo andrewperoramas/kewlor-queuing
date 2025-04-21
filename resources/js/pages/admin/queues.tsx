@@ -120,6 +120,16 @@ const Queues = ({ userQueues, firstInQueue }: { userQueues: PaginatedCollection<
                                                 >
                                                     Mark as active
                                                 </Link>
+
+                                                <Link
+                                                        method="get"
+    as="button"
+
+
+                                                        href={route('admin.queue.not.working', userQueue.id)}
+                                                >
+                                                    Mark as not active
+                                                </Link>
                                             </td>
                                         </tr>
                                     ))}

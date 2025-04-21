@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function (): void {
 
     Route::get('/admin/queues/completed', [AdminFinishedQueueController::class, 'index'])->name('admin.queue.completed');
     Route::get('/admin/queues/working/{id}', AdminWorkingQueueController::class)->name('admin.queue.working');
+    Route::get('/admin/queues/not-working/{id}', [ AdminWorkingQueueController::class, 'notWorking' ])->name('admin.queue.not.working');
 
     Route::post('/live/settings', [LiveSettingsController::class, 'update'])->name('live.settings.update');
 
