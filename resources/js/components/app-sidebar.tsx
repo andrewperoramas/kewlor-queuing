@@ -25,6 +25,13 @@ const mainNavItems: NavItem[] = [
         url: '/admin/queues/completed',
         icon: LayoutGrid,
     },
+    {
+        title: 'Gallery',
+        url: 'https://gallery.kewlor.com',
+        icon: LayoutGrid,
+        type: 'external',
+    },
+
 ];
 
 const footerNavItems: NavItem[] = [

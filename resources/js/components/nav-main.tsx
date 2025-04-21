@@ -11,10 +11,20 @@ export function NavMain({ items = [] }: { items: NavItem[] }) {
                 {items.map((item) => (
                     <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={item.url === page.url}>
-                            <Link href={item.url} prefetch>
+                            {item.type !== 'external' ? (
+                             <Link href={item.url} prefetch>
                                 {item.icon && <item.icon />}
                                 <span>{item.title}</span>
                             </Link>
+                            ): (
+                            <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                {item.icon && <item.icon />}
+                                <span>{item.title}</span>
+                            </a>
+                            )
+
+                            }
+
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 ))}
