@@ -38,7 +38,7 @@ const QueueCard = ({ userQueue }: { userQueue: App.Data.UserQueueData }) => {
                     {userQueue.admin_notes && (
                         <>
                             <h3 className="mr-2 mb-0.5 inline-block text-base font-medium text-black">Notes</h3>
-                            <p className="text-muted-foreground inline-block text-sm">{userQueue.admin_notes}</p>
+                            <p className={`text-muted-foreground inline-block text-sm ${userQueue.is_working && 'text-white'}`}>{userQueue.admin_notes}</p>
                         </>
                     )}
                 </div>
